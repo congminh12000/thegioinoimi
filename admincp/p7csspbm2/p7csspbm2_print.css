@@ -1,0 +1,20 @@
+/*Min-width determines the point at which your layout width will cease to shrink horizontally and your browser will spawn a horizontal scroll bar.*/
+body {
+	margin: 0;
+	padding: 0;
+	min-width: 0;
+}
+/*DO NOT EDIT*/
+.sidebar, .main-content, .sidebar2   {
+	padding-bottom: 0;
+	margin-bottom: 0;
+	float: none;
+	width: auto;
+	border: 0;
+}
+.menuside li {
+	display: inline-block;
+}
+.main-content  {
+	margin: 0;
+}

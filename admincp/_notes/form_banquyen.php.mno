@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="MM_css_include" value="" />
+	<infoitem key="UD_rscopyright" value="name:businessname;datatype:int,name:businesslogo;datatype:int,name:businessaddress;datatype:int,name:businessemail;datatype:int,name:businessphonenumber;datatype:int,name:businesswebsite;datatype:int,name:business_metakey;datatype:int,name:business_metades;datatype:int,name:businessfanpageaddon;datatype:int,name:businessgoogleanalytics;datatype:int,name:businessfacebook;datatype:int,name:businesstwitter;datatype:int,name:businessgoogle;datatype:int,name:businessyoutube;datatype:int,name:businessinstagram;datatype:int,name:businesspinterest;datatype:int,name:ID_copyright;datatype:int" />
+</info>

@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="MM_css_include" value="" />
+	<infoitem key="UD_rsaccount" value="name:username;datatype:int,name:password;datatype:int,name:fullname;datatype:int,name:avatar;datatype:int,name:email;datatype:int,name:address;datatype:int,name:accesslevel;datatype:int,name:registereddate;datatype:int,name:ID_account;datatype:int" />
+</info>

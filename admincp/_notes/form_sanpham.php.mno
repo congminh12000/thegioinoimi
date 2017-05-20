@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="MM_css_include" value="" />
+	<infoitem key="UD_rs_danhmuc1" value="name:ID_menubar1;datatype:int,name:menubar1name;datatype:string" />
+	<infoitem key="UD_Recordset1" value="name:menubar1name;datatype:string,name:ID_menubar1;datatype:int" />
+	<infoitem key="UD_Recordset2" value="name:menubar2name;datatype:string,name:ID_menubar2;datatype:int" />
+	<infoitem key="UD_rs_danhmuc2" value="name:ID_menubar2;datatype:int,name:menubar2name;datatype:string,name:ID_menubar1;datatype:int" />
+	<infoitem key="UD_rsproduct" value="name:ID_danhmuc1;datatype:int,name:ID_danhmuc2;datatype:int,name:productname;datatype:int,name:productname_EN;datatype:int,name:productimg;datatype:int,name:productmaterial;datatype:int,name:productmaterial_EN;datatype:int,name:productcolor;datatype:int,name:productcolor_EN;datatype:int,name:productprice;datatype:int,name:productkind;datatype:int,name:productdetail;datatype:int,name:productdetail_EN;datatype:int,name:productapproval;datatype:int,name:ID_account;datatype:int,name:ID_product;datatype:int" />
+</info>

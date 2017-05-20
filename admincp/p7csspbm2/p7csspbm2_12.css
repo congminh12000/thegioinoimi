@@ -1,0 +1,203 @@
+body {
+	font-family: 'Roboto', Arial, sans-serif;
+	color: #363636;
+	background-color: #FFF;
+	margin: 0px;
+	padding: 0px;
+}
+img {vertical-align: bottom;}
+
+.footer {
+	background-color: #222;
+	box-shadow: inset 0px 16px 2px rgba(255,255,255,.025);
+	border-top: 1px solid #000;
+	padding: 15px 30px;
+	font-size: 12px;
+	color: #ffffff;
+	text-align: center;
+}
+.footer p.copyright {
+	margin: 0px;
+}
+.footer a:link {
+	color: #f9a020;
+	text-decoration: none;
+}
+.masthead {
+	background-color: #f9a020;
+	padding: 0px;
+	text-align: left;
+	position: relative;
+	border-bottom: 2px solid #363636;
+}
+.masthead .logo {
+	padding-left: 30px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	float: left;
+}
+.masthead .logo .logonotes {
+	line-height: 30px;
+	font-weight: bold;
+}
+.masthead .headerlogout {
+	float: right;
+	display: block; 
+	height: 32px:
+	width: 32px;
+	font-size: 24px;
+	margin-right: 30px;
+	padding-top: 18px;
+	padding-bottom: 10px;
+}
+.masthead .headerlogout .hello {
+	font-size: 16px;
+}
+.masthead .headerlogout a:link, .masthead .headerlogout a:visited {
+	color: #363636;
+}
+.masthead .headerlogout a:hover {
+	color: #ffffff;
+}
+.masthead h1 {
+	margin: 0;
+	color: #8C8C8C;
+	padding: 20px 20px 10px 20px;
+	font-size: 1.35em;
+	font-weight: normal;
+	letter-spacing: .35em;
+}
+.masthead .banner img {
+	height: auto !important;
+	width: auto !important;
+	max-width: 100%;
+	display: block;
+}
+
+
+.content-wrapper {
+	margin: 0px;
+}
+.columns-wrapper {
+	overflow: hidden;
+	background-color: #FFF;
+}
+
+.main-content {
+	width: 88%;
+	float: left;
+}
+.sidebar {
+	width: 12%;
+	float: left;
+}
+
+.sidebar .content {
+	padding: 10px 10px;
+	font-size: 0.85em;
+	line-height: 1.5em;
+	background-color: #d2d2d2;
+}
+.main-content .content {
+	padding: 30px;
+	font-size: 1em;
+	line-height: 1.5em;
+}
+
+/*Heading styles*/
+h1, h2, h3, h4 {
+	margin: 30px 0px 0px 0px;
+}
+h1 { font-size: 1.5em; }
+h2 { font-size: 1.35em; }
+h3 { font-size: 1.25em; }
+h4 { font-size: 1.1em; }
+
+/*A utility rule assigned to the first heading to remove top margins.*/
+.page-topper { margin-top: 0px; }
+
+/*Make Image Scalable - Assign this class to any image to make it scale with the browser window size*/
+img.scalable {
+	height: auto !important;
+	width: auto !important;
+	max-width: 100%;
+}
+
+/*Ordinary Link Styles*/
+.content a { color: #363636; }
+.content a:hover, .content a:focus { color: #C30; }
+.sidebar2 a { color: #0059B3; }
+.sidebar2 a:hover, .sidebar2 a:focus { color: #000; }
+.footer a {
+	color: #f9a020;
+}
+.footer a:hover, .footer a:focus { color: #8C8C8C; }
+
+.sidebar ul, .sidebar ol, .sidebar2 ul, .sidebar2 ol {
+	margin: 0 0 0 .5em;
+	padding: 0 0 0 .5em;
+	line-height: normal;
+}
+.sidebar li, .sidebar2 li { 
+	margin-bottom: 4px; 
+}
+
+/*The Sidebar Menu UL.*/
+ul.menuside {
+	margin: 0;
+	padding: 0;
+}
+ul.menuside li {
+	list-style-type: none;
+	margin-bottom: 5px;
+}
+ul.menuside a {
+	display: block;
+	color: #ffffff;
+	text-decoration: none;
+	padding: 12px 12px;
+	font-size: 1.25em;
+	background-color: #f9a020;
+	border-color: #FFF;
+	-webkit-transition: all linear .35s .1s;
+	transition: all linear .35s .1s;
+}
+ul.menuside a:hover, ul.menuside a:focus {
+	color: #FFFFFF;
+	background-color: rgba(51,51,51,0.75);
+	outline: 0;
+}
+
+
+/*1 Column for Narrow Browser Windows and Smartphones in both orientations*/
+@media only screen and (max-width: 1366px) {
+ul.menuside a {
+	font-size: 14px;
+}
+.sidebar {
+	width: 11%;
+}
+}
+@media only screen and (min-width: 0px) and (max-width: 699px) {
+ul.menutop {display: block;}
+.menutop li {
+	display: block;
+	float: none;
+	margin-right: 0px;
+	margin-bottom: 5px;
+}
+.sidebar, .sidebar2, .main-content {
+	width: auto !important;
+	float: none !important;
+	position: static !important;
+}
+.content, .menutop-wrapper {
+	padding: 10px 20px !important;
+	border: none !important;
+	height: auto !important;
+	max-height: 888678px;
+}
+}
+@media only screen and (min-width: 700px) and (max-width: 1000px)  {
+.content {padding: 20px !important;}
+}

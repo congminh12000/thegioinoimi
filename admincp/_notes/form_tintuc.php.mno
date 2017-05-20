@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="MM_css_include" value="" />
+	<infoitem key="UD_Recordset1" value="name:ID_menubar1;datatype:int,name:menubar1name;datatype:string" />
+	<infoitem key="UD_rs_danhmuc1" value="name:ID_menubar1;datatype:int,name:menubar1name;datatype:string" />
+	<infoitem key="UD_rs_danhmuc3" value="name:ID_menubar2;datatype:int,name:menubar2name;datatype:string,name:ID_menubar1;datatype:int" />
+	<infoitem key="UD_rs_danhmuc2" value="name:ID_menubar2;datatype:int,name:menubar2name;datatype:string,name:ID_menubar1;datatype:int" />
+	<infoitem key="UD_rsnews" value="name:ID_menubar1;datatype:int,name:ID_menubar2;datatype:int,name:newstitle;datatype:int,name:newstitle_EN;datatype:int,name:shortdes;datatype:int,name:shortdes_EN;datatype:int,name:newsimg;datatype:int,name:newscontent;datatype:int,name:newscontent_EN;datatype:int,name:newsview;datatype:int,name:newsapproval;datatype:int,name:newsdate;datatype:int,name:ID_account;datatype:int,name:ID_news;datatype:int" />
+</info>

@@ -1,0 +1,1 @@
+<div class="footer"><p class="copyright">&copy; 2017 Copyright by <a href="http://www.teamdnt.website">TeamDnT - WebDesign</a></p></div>

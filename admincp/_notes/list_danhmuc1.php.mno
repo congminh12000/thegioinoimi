@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="MM_css_include" value="" />
+	<infoitem key="UD_rsmenubar1" value="name:menubar1name;datatype:string,name:menubar1visible;datatype:int,name:menubar1link;datatype:int,name:ID_menubar1;datatype:int,name:menubar1orderlist;datatype:int" />
+</info>
