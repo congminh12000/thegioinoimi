@@ -26,7 +26,8 @@ if ($_GET) {
 
     $strQuery = "SELECT * FROM order_item as oi LEFT JOIN product as p ON oi.ID_product = p.ID_product WHERE ID_order = {$orderId}";
     $query = mysql_query($strQuery);
-    $table = '<table class="table table-hover">'
+    $table = '</table>'
+            . '<table class="table table-hover">'
             . '<thead>'
                        .'                 <tr>'
                                             .'<th>Tên sản phẩm</th>'

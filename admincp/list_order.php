@@ -50,6 +50,7 @@ $results = $classPaginator->getData($limit, $page);
         <title>Công Ty TNHH Thương Mại Lyan</title>
         <link rel="stylesheet" href="../vendor/bootstrap.css">
         <link rel="stylesheet" href="../css/bootstrap-datepicker.min.css">
+        <link rel="stylesheet" href="../css/sweet-alert-2.min.css">
         <script type="text/javascript" src="p7ehc/p7EHCscripts.js"></script>
         <link href="p7csspbm2/p7csspbm2_12.css" rel="stylesheet" type="text/css">
         <link href="p7csspbm2/p7csspbm2_print.css" rel="stylesheet" type="text/css" media="print">
@@ -58,6 +59,7 @@ $results = $classPaginator->getData($limit, $page);
         <script src="../vendor/jquery.min.js" type="text/javascript"></script>
         <script src="../vendor/bootstrap.js" type="text/javascript"></script>
         <script src="../js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+        <script src="../js/sweet-alert-2.min.js" type="text/javascript"></script>
         <link rel="shortcut icon" href="../images/favicon.ico">
 
 
@@ -143,6 +145,7 @@ $results = $classPaginator->getData($limit, $page);
                                         if ($results->total):
                                             $stt = 1;
                                             foreach ($results->data as $row):
+//                                                var_dump($row);die;
                                                 ?>
                                                 <tr>
                                                     <td class="text-center"><?php echo $stt; ?></td>
@@ -156,6 +159,14 @@ $results = $classPaginator->getData($limit, $page);
                                                     <td class="text-center">
                                                         <a href="javascript:void(0);" class="btn-detail" data-id="<?php echo $row['ID_order']; ?>">
                                                             <i class="fa fa-plus" aria-hidden="true" style="color: #f9a020"></i>
+                                                        </a>
+                                                        <a href="javascript:void(0);" class="btn-detail-receiver"
+                                                           data-receiver-name="<?php echo $row['receiver_name']; ?>"
+                                                           data-receiver-phone="<?php echo $row['receiver_phone']; ?>"
+                                                           data-receiver-email="<?php echo $row['receiver_email']; ?>"
+                                                           data-receiver-address="<?php echo $row['receiver_address']; ?>"
+                                                           data-receiver-note="<?php echo $row['receiver_note']; ?>">
+                                                            <i class="fa fa-building-o" aria-hidden="true"></i>
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -203,6 +214,41 @@ $results = $classPaginator->getData($limit, $page);
     $(document).ready(function () {
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd',
+        });
+
+        $('.btn-detail-receiver').click(function () {
+            var that = $(this);
+            var receiverName = that.data('receiver-name');
+            var receiverEmail = that.data('receiver-email');
+            var receiverPhone = that.data('receiver-phone');
+            var receiverAddress = that.data('receiver-address');
+            var receiverNote = that.data('receiver-note');
+            
+            var html = '<table class="table table-striped table-hover" width="100%">';
+            html += '<tr>\n\
+                <td width="30%">\n\
+                 Tên người nhận    \n\
+                    </td>\n\
+<td>\n\
+                 '+ receiverName +'    \n\
+                    </td></tr>\n\
+<tr><td>\n\
+                 Email người nhận    \n\
+                    </td>\n\
+<td> '+receiverEmail+'</td></tr>\n\
+<tr><td>Sđt</td>\n\
+<td>'+receiverPhone+'</td></tr>\n\
+<tr><td>Địa chỉ</td>\n\
+<td>'+receiverAddress+'</td></tr>\n\
+<tr><td>Ghi chú</td>\n\
+<td>'+receiverNote+'</td></tr>\n\
+';
+            html += '<table>';
+        
+            swal({
+                title: '<span style="color: #ab47bc">Thông tin người nhận</span>',
+                html: html,
+            })
         });
 
         $('.btn-detail').click(function () {
