@@ -24,6 +24,8 @@ if ($_GET && $_GET['isSearch']) {
     }
 }
 
+$strQuery .= ' ORDER BY ID_order DESC';
+
 //class order
 require_once('../includes/my/order.php');
 $classOrder = new Order();

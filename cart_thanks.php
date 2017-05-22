@@ -48,7 +48,7 @@ if($_POST){
         foreach($arrProdCart as $prod){
             $grandTotal = $prod['price_access_level'] * $prod['qty_cart'];
             
-            $strValuesItem .= "('{$orderId}', '{$prod['qty_cart']}', '{$prod['ID_product']}', '{$grandTotal}'), {$prod['price_access_level']}";
+            $strValuesItem .= "('{$orderId}', '{$prod['qty_cart']}', '{$prod['ID_product']}', '{$grandTotal}', {$prod['price_access_level']}),";
         }
         $strValuesItem = rtrim($strValuesItem, ',');
         
