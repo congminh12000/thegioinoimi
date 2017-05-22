@@ -91,8 +91,8 @@ if($nums){
                     <?php 
                     $priceTotal = 0;
                     foreach($arrProdCart as $row): 
-                    $priceTotal +=  $cart['arrProd'][$row['ID_product']]['sl'] * $row['price_access_level'];
-                    $sl = $cart['arrProd'][$row['ID_product']]['sl'];
+                    $priceTotal +=  $row['qty_cart'] * $row['price_access_level'];
+                    $sl = $row['qty_cart'];
                     ?>
                         <div class="row cart-product">
                     	<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
@@ -130,10 +130,10 @@ if($nums){
                         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
                             <form method="POST" action="cart_thanks.php">
                                 <input type="text" name="fullname" placeholder="Họ tên"><br>
-                                <input type="text" name="phoneumber" placeholder="Điện thoại"><br>                  
+                                <input type="text" name="phone" placeholder="Điện thoại"><br>                  
                                 <input type="text" name="email" placeholder="Email" width="350px"><br>
                                 <input type="text" name="address" placeholder="Địa chỉ nhận hàng"><br> 
-                                <textarea rows="4" cols="50" placeholder="Ghi chú"></textarea><br>
+                                <textarea rows="4" cols="50" name="note" placeholder="Ghi chú"></textarea><br>
                                 <button type="submit" class="btn btn-info">Thanh toán</button>
                     		</form>
                         </div>

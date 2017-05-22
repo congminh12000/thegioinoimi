@@ -132,6 +132,7 @@ class Price {
             $priceAccessLevel = isset($arrPrice[$item['ID_product']]) ? $arrPrice[$item['ID_product']] : $item['productprice'];
             
             $item['price_access_level'] = $priceAccessLevel;
+            $item['qty_cart'] = (int) $arrProd[$item['ID_product']]['sl'];
         }
         
         return $listProd;

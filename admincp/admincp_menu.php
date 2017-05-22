@@ -1,4 +1,5 @@
 <ul class="menuside">
+            <li><a href="list_order.php" target="_self"><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;&nbsp;Danh sách đơn hàng</a></li>
           <li><a href="list_danhmuc1.php" target="_self"><i class="fa fa-suitcase" aria-hidden="true"></i>&nbsp;&nbsp;Danh mục 1</a></li>
           <li><a href="list_danhmuc2.php" target="_self"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;&nbsp;Danh mục 2</a></li>
           <li><a href="list_tintuc.php" target="_self"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Tin tức</a></li>

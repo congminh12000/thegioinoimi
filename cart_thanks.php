@@ -1,4 +1,7 @@
 <?php 
+require_once('Connections/cnn_hoaly.php');
+mysql_select_db($database_cnn_hoaly, $cnn_hoaly);
+
 session_start();
 $user = $_SESSION['user'];
 $id_account = (int) $user['ID_account'];
@@ -7,6 +10,55 @@ if($id_account == 0){
     header('Location: dntgate.php');
 }
 
+//save order
+if($_POST){
+    $fullname = trim($_POST['fullname']);
+    $phone = trim($_POST['phone']);
+    $email = trim($_POST['email']);
+    $address = trim($_POST['address']);
+    $note = $_POST['note'];
+    
+    $cart = $_SESSION['cart'][$id_account];
+
+    if($cart){
+        //get price access level
+        require_once ('includes/my/price.php');
+        $classPrice = new Price();
+        $arrProdCart = $classPrice->productCartToAccessLevel();
+        
+        $grandTotal = 0;
+//    echo '<pre>';print_r($cart);die;  
+        foreach($arrProdCart as $prod){
+            $grandTotal += $prod['price_access_level'] * $prod['qty_cart'];
+        }
+        
+        //insert orders
+        $strKeys = '`status`, total_qty, grand_total, receiver_name, receiver_phone, receiver_email, receiver_address, receiver_note, buyer_id';
+        $strValuesOrder = "'pending', '{$cart['nums']}', '{$grandTotal}', '{$fullname}', '{$phone}', '{$email}', '{$address}', '{$note}', '{$id_account}'";
+        
+        $strQuery = "INSERT INTO orders({$strKeys}) VALUES({$strValuesOrder})";
+        mysql_query($strQuery);
+        
+        $orderId = mysql_insert_id();
+        
+        //insert order_item
+        $strKeys = 'ID_order, qty_ordered, ID_product, grand_total, price_access_level';
+        
+        $strValuesItem = '';
+        foreach($arrProdCart as $prod){
+            $grandTotal = $prod['price_access_level'] * $prod['qty_cart'];
+            
+            $strValuesItem .= "('{$orderId}', '{$prod['qty_cart']}', '{$prod['ID_product']}', '{$grandTotal}'), {$prod['price_access_level']}";
+        }
+        $strValuesItem = rtrim($strValuesItem, ',');
+        
+        $strQuery = "INSERT INTO order_item({$strKeys}) VALUES{$strValuesItem}";
+        
+        mysql_query($strQuery);
+    }
+}
+
+//remove session cart
 unset($_SESSION['cart'][$id_account]);
 ?>
 <!DOCTYPE html>
