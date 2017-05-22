@@ -69,6 +69,7 @@ function Trigger_CheckOldPassword(&$tNG) {
 }
 //end Trigger_CheckOldPassword trigger
 
+
 // Make an insert transaction instance
 $ins_account = new tNG_multipleInsert($conn_cnn_hoaly);
 $tNGs->addTransaction($ins_account);
@@ -130,6 +131,13 @@ $tNGs->executeTransactions();
 $rsaccount = $tNGs->getRecordset("account");
 $row_rsaccount = mysql_fetch_assoc($rsaccount);
 $totalRows_rsaccount = mysql_num_rows($rsaccount);
+
+//select db
+mysql_select_db($database_cnn_hoaly, $cnn_hoaly);
+
+//get list accesslevel
+$strQueryAccessLevel = 'SELECT * FROM accesslevel WHERE deleted = 0 AND status = 1';
+$queryAccessLevel = mysql_query($strQueryAccessLevel);
 ?>
 <!doctype html>
 <html>
@@ -281,12 +289,11 @@ if (@$_GET['ID_account'] != "") {
                   </tr>
                   <tr>
                     <td class="KT_th"><label for="accesslevel_<?php echo $cnt1; ?>">Quyền:</label></td>
-                    <td colspan="2"><select name="accesslevel_<?php echo $cnt1; ?>" id="accesslevel_<?php echo $cnt1; ?>">
-                      <option value="1" <?php if (!(strcmp(1, KT_escapeAttribute($row_rsaccount['accesslevel'])))) {echo "SELECTED";} ?>>Admin</option>
-                      <option value="2" <?php if (!(strcmp(2, KT_escapeAttribute($row_rsaccount['accesslevel'])))) {echo "SELECTED";} ?>>Guess Lv.1</option>
-                      <option value="3" <?php if (!(strcmp(3, KT_escapeAttribute($row_rsaccount['accesslevel'])))) {echo "SELECTED";} ?>>Guess Lv.2</option>
-                      <option value="4" <?php if (!(strcmp(4, KT_escapeAttribute($row_rsaccount['accesslevel'])))) {echo "SELECTED";} ?>>Guess Lv.3</option>
-                      <option value="5" <?php if (!(strcmp(5, KT_escapeAttribute($row_rsaccount['accesslevel'])))) {echo "SELECTED";} ?>>Guess Lv.4</option>
+                    <td colspan="2">
+                        <select name="accesslevel_<?php echo $cnt1; ?>" id="accesslevel_<?php echo $cnt1; ?>">
+                            <?php while($row = mysql_fetch_assoc($queryAccessLevel)): ?>
+                      <option value="<?php echo $row['ID_accesslevel']; ?>" <?php echo $row['ID_accesslevel'] == KT_escapeAttribute($row_rsaccount['accesslevel']) ? 'selected="selected"' : ''; ?>><?php echo $row['name']; ?></option>
+                      <?php endwhile; ?>
                     </select>
                       <?php echo $tNGs->displayFieldError("account", "accesslevel", $cnt1); ?></td>
                   </tr>

@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <footer class="bottom_tail">
     	<div class="container">
         	<div class="row">
@@ -49,3 +50,130 @@
             </div>
         </div> <!-- end container-->
     </div> <!-- end copyright-->
+    
+<script>
+    var userId = <?php echo (int) $_SESSION['user']['ID_account']; ?>;
+
+$(document).ready(function(){
+    $('.btn-add-cart').click(function(){
+        var that = $(this);
+        
+        if(userId == 0){
+            alert('Vui lòng đăng nhập trước khi mua hàng !');
+            return false;
+        }
+        
+        var productId = $(this).data('id');
+        
+        if(productId == '' || productId == 0){
+            alert('Lỗi !');
+            return false;
+        }
+        
+        $.ajax({
+            url: 'handle_add_cart.php',
+            type: 'GET',
+            dataType: 'JSON',
+            data: {
+                productId: productId
+            },
+            success:function(result){
+                
+                if(!result.isError){
+                    var nums = result.data.nums;
+                    var icon = '<i class="glyphicon glyphicon-ok"></i>';
+                    
+                    $('.cart-nums').html(nums);
+                    
+                    //show success
+                    that.closest('div').find('.success-add-cart').show( function (){
+                        var that = $(this);
+                        
+                        setTimeout(function(){
+                            that.hide();
+                        }, 3000);
+                    });
+                }else{
+//                    alert(result.message);
+                }
+            }
+        })
+    });
+    
+    $('.btn-update-sl').click(function(){
+        var that = $(this);
+        var productId = $(this).data('id');
+        var sl = $(this).closest('div').find('input.so-luong-sp').val();
+        var price = $(this).data('price');
+        
+        if(productId == '' || productId == 0){
+            alert('Lỗi !');
+            return false;
+        }
+        
+        $.ajax({
+            url: 'update_sl.php',
+            type: 'GET',
+            dataType: 'JSON',
+            data: {
+                productId: productId,
+                sl: sl
+            },
+            success:function(result){
+                
+                if(!result.isError){
+                    var totalPriceProd = price * sl;
+                    var oldSl = result.data.oldSl;
+                    var oldPrice = oldSl * price;
+                    var oldSumTotal = $('.sum-total').data('price');
+                    
+                    var newSumTotal = oldSumTotal - oldPrice + totalPriceProd;
+                    
+                    that.closest('.cart-product').find('.total-price').html(totalPriceProd + ' đ');
+                    $('.sum-total').html(newSumTotal + ' đ');
+                    $('.sum-total').data('price', newSumTotal);
+                }else{
+//                    alert(result.message);
+                }
+            }
+        })
+    });
+    
+    $('.btn-remove-prod').click(function(){
+        var that = $(this);
+        var productId = $(this).data('id');
+        var price = $(this).data('price');
+        
+        if(productId == '' || productId == 0){
+            alert('Lỗi !');
+            return false;
+        }
+        
+        $.ajax({
+            url: 'remove_product.php',
+            type: 'GET',
+            dataType: 'JSON',
+            data: {
+                productId: productId
+            },
+            success:function(result){
+                
+                if(!result.isError){
+                    var sl = result.data.sl;
+                    var totalPriceProd = price * sl;
+                    var oldSumTotal = $('.sum-total').data('price');
+                    
+                    var newSumTotal = oldSumTotal - totalPriceProd;
+                    
+                    $('.sum-total').html(newSumTotal + ' đ');
+                    $('.sum-total').data('price', newSumTotal);
+                    
+                    that.closest('.cart-product').fadeOut(function() { $(this).remove(); });
+                }else{
+//                    alert(result.message);
+                }
+            }
+        })
+    });
+});
+</script>

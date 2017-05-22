@@ -1,3 +1,29 @@
+<?php 
+require_once('Connections/cnn_hoaly.php');
+mysql_select_db($database_cnn_hoaly, $cnn_hoaly);
+ 
+session_start();
+
+$user = $_SESSION['user'];
+$id_account = (int) $user['ID_account'];
+
+if($id_account == 0){
+    header('Location: dntgate.php');
+}
+
+$cart = $_SESSION['cart'][$id_account];
+//echo'<pre>';print_r($cart);die;
+$nums = (int) $cart['nums'];
+
+if($nums){
+    //get price
+    require_once ('includes/my/price.php');
+    $classPrice = new Price();
+    $arrProdCart = $classPrice->productCartToAccessLevel();
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,34 +86,32 @@
                         	<b>Thành tiền</b>
                         </div>
                     </div> <!-- end row  cart-title-->
-                <div class="row cart-product">
+                    <?php if($nums): ?>
+                    
+                    <?php 
+                    $priceTotal = 0;
+                    foreach($arrProdCart as $row): 
+                    $priceTotal +=  $cart['arrProd'][$row['ID_product']]['sl'] * $row['price_access_level'];
+                    $sl = $cart['arrProd'][$row['ID_product']]['sl'];
+                    ?>
+                        <div class="row cart-product">
                     	<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-                      		<img src="images/san-pham-1.png" alt="Công ty TNHH Thương mại Lyan" class="img-responsive"> 
+                            <img src="<?php echo 'images/product/' . $row['productimg']; ?>" alt="Công ty TNHH Thương mại Lyan" class="img-responsive"> 
+                            <button class="btn btn-warning btn-remove-prod" style="margin-top: 5px" data-id="<?php echo $row['ID_product']; ?>" data-price="<?php echo $row['price_access_level']; ?>">Xóa sản phẩm</button>
                       	</div>
                         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 text-center">
-                        	HH01 - Keo nối mi
+                        	<?php echo $row['productname']; ?>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
-                        	1
+                            <input type="number" class="so-luong-sp" min='1' value="<?php echo $sl; ?>" />
+                            <button class="btn btn-success btn-update-sl" style="margin-top: 5px" data-id="<?php echo $row['ID_product']; ?>" data-price="<?php echo $row['price_access_level']; ?>">Cập nhật số lượng</button>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
-                        	58000đ
+                            <span class="total-price"><?php echo $row['price_access_level'] * $sl . ' đ'; ?></span>
                         </div>
                     </div> <!-- end row  cart-product-->
-                    <div class="row cart-product">
-                    	<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-                      		<img src="images/san-pham-1.png" alt="Công ty TNHH Thương mại Lyan" class="img-responsive">
-                      	</div>
-                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 text-center">
-                        	HH02 - Keo dán mi
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
-                        	1
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
-                        	108000đ
-                        </div>
-                    </div> <!-- end row cart-product-->
+                    <?php endforeach; ?>
+                
                     <div class="row cart-total-price">
                     	<div class="hidden-xs hidden-sm col-md-2 col-lg-2 text-center">
                       	</div>
@@ -97,23 +121,26 @@
                         	<h4><b>THÀNH TIỀN</b></h4>
                       	</div>
                         <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
-                        	<h4><b>108000đ</b></h4>
+                        	<h4><b class="sum-total" data-price="<?php echo $priceTotal; ?>"><?php echo $priceTotal . 'đ'; ?></b></h4>
                         </div>
                     </div> <!-- end row cart-total-price-->
                     <div class="row receiveinfo">
                     	<h3>Thông tin người nhận</h3>
                     	<span class="line3"></span>
                         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-                        	<form>
+                            <form method="POST" action="cart_thanks.php">
                                 <input type="text" name="fullname" placeholder="Họ tên"><br>
                                 <input type="text" name="phoneumber" placeholder="Điện thoại"><br>                  
                                 <input type="text" name="email" placeholder="Email" width="350px"><br>
                                 <input type="text" name="address" placeholder="Địa chỉ nhận hàng"><br> 
                                 <textarea rows="4" cols="50" placeholder="Ghi chú"></textarea><br>
-                                <button type="button" class="btn btn-info">Thanh toán</button>
+                                <button type="submit" class="btn btn-info">Thanh toán</button>
                     		</form>
                         </div>
                     </div> <!-- end row receive-info-->
+                    <?php else: ?>
+                    <p class="text-center">Không có sản phẩm nào trong giỏ</p>
+                    <?php endif; ?>
                 </div> <!-- end col -->
                 <div class="hidden-xs hidden-sm col-md-3 col-lg-3">
        		    	<img src="images/advertising-280x360.png" class="img-responsive">

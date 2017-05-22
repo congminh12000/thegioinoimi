@@ -170,6 +170,32 @@ $del_product->registerTrigger("AFTER", "Trigger_FileDelete", 98);
 $del_product->setTable("product");
 $del_product->setPrimaryKey("ID_product", "NUMERIC_TYPE", "GET", "ID_product");
 
+$productId = (int) $_GET['ID_product'];
+
+//submit
+if($_POST){
+    
+    $arrPriceAccessLevel = $_POST['productprice_accesslevel_1'];
+    
+    if($productId){ //update price
+        
+        //delete old price
+        $strQuery = 'DELETE FROM price WHERE product_id = ' . $productId;
+        mysql_query($strQuery);
+        
+        //insert new price
+        $strValues = '';
+        foreach($arrPriceAccessLevel as $accesslevel_id => $price){
+            $strValues .= "({$productId}, {$accesslevel_id}, {$price}),";
+        }
+        
+        $strValues = rtrim($strValues, ',');
+
+        $strQuery = 'INSERT INTO price(product_id,accesslevel_id,price) VALUES' . $strValues;
+        mysql_query($strQuery);
+    }
+}
+
 // Execute all the registered transactions
 $tNGs->executeTransactions();
 
@@ -177,6 +203,23 @@ $tNGs->executeTransactions();
 $rsproduct = $tNGs->getRecordset("product");
 $row_rsproduct = mysql_fetch_assoc($rsproduct);
 $totalRows_rsproduct = mysql_num_rows($rsproduct);
+
+
+//get price
+if($productId){
+    //get accesslevel
+    $strQueryAccessLevel = 'SELECT * FROM accesslevel WHERE deleted = 0 AND status = 1';
+    $queryAccessLevel = mysql_query($strQueryAccessLevel);
+
+    $strQueryPrice = 'SELECT * FROM price WHERE deleted = 0 AND status = 1 AND product_id = ' . $productId;
+    $queryPrice = mysql_query($strQueryPrice);
+    
+    while($row = mysql_fetch_assoc($queryPrice)){
+        $arrPrice[$row['accesslevel_id']] = $row;
+    }
+    
+}
+
 ?>
 <!doctype html>
 <html xmlns:wdg="http://ns.adobe.com/addt">
@@ -357,9 +400,30 @@ do {
                     <td class="KT_th"><label for="productprice_<?php echo $cnt1; ?>">Giá công khai:<br>
                       (Viết liền không dấu)
                     </label></td>
-                    <td colspan="2"><input type="text" name="productprice_<?php echo $cnt1; ?>" id="productprice_<?php echo $cnt1; ?>" value="<?php echo KT_escapeAttribute($row_rsproduct['productprice']); ?>" size="7" />
-                      <?php echo $tNGs->displayFieldHint("productprice");?> <?php echo $tNGs->displayFieldError("product", "productprice", $cnt1); ?></td>
+                    <td colspan="2"><input type="text" name="productprice_<?php echo $cnt1; ?>" id="productprice_<?php echo $cnt1; ?>" value="<?php echo KT_escapeAttribute($row_rsproduct['productprice']); ?>" size="7" /> <br>
+                      <?php echo $tNGs->displayFieldHint("productprice");?> <?php echo $tNGs->displayFieldError("product", "productprice", $cnt1); ?>
+                        
+                       
+                    </td>
                   </tr>
+                  <?php if($productId): ?>
+                  <tr>
+                    <td class="KT_th"><label for="productprice_<?php echo $cnt1; ?>">Giá access level:<br>
+                    </label></td>
+                    <td colspan="2">
+                        
+                        <?php 
+                            if(mysql_num_rows($queryAccessLevel)): 
+                                while($row = mysql_fetch_assoc($queryAccessLevel)):
+                        ?>
+                        Giá <?php echo $row['name']; ?><input type="text" name="productprice_accesslevel_<?php echo $cnt1; ?>[<?php echo $row['ID_accesslevel']; ?>]" id="" value="<?php echo KT_escapeAttribute($arrPrice[$row['ID_accesslevel']]['price']); ?>" size="7" /> <br>
+                        <?php 
+                                endwhile;
+                            endif; 
+                        ?>
+                    </td>
+                  </tr>
+                  <?php endif; ?>
                   <tr>
                     <td class="KT_th"><label for="productkind_<?php echo $cnt1; ?>">Loại mi:<br>(Chỉ điền cho sản phẩm MI NỐI)
                     </label></td>

@@ -52,6 +52,7 @@
     </head>
 
     <body>
+        <?php require_once('Connections/cnn_hoaly.php'); ?>
         <header class="top_header">
             <div class="container">
                 <div class="row">

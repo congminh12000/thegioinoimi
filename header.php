@@ -1,3 +1,13 @@
+<?php 
+session_start();
+
+$user = $_SESSION['user'];
+$id_account = (int) $user['ID_account'];
+
+$cart = $_SESSION['cart'][$id_account];
+$cart_nums = (int) $cart['nums'];
+?>
+
 <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 	<h4><b>Công ty TNHH Thương mại Lyan</b></h4>
                     <h4>365 Sư Vạn Hạnh, Phường 12, Quận 10, TP.HCM</h4>
@@ -20,14 +30,19 @@
                         </span> 
                     </div> <!--end row-->
                 	<div class="row language_box">
-                   		<span class="submenu">
-                        	<a href="dntgate.php" target="_self">Đăng nhập&nbsp;&nbsp;</a>
-                        </span>
+                            <?php
+                                if($user):
+                                    echo '<span class="submenu">Xin chào, ' . ucfirst($user['fullname']) . '</span> | ';
+                                    echo '<span class="submenu"><a href="logout.php">Đăng xuất</a></span> |';
+                                else:
+                                    ?>
+                                    <span class="submenu"><a href="dntgate.php" target="_self">Đăng nhập&nbsp;&nbsp;</a></span> |
+                            <?php
+                                endif;
+                            ?>
+                       
                         <span class="submenu">
-                        	<a href="#">Đăng ký&nbsp;&nbsp;</a>
-                        </span>
-                        <span class="submenu">
-                        	<a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Giỏ hàng <span class="badge">6</span></a>
+                        	<a href="cart.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Giỏ hàng <span class="badge cart-nums"><?php echo $cart_nums; ?></span></a>
                         </span>
                     </div> <!--end row-->
                 </div> <!--end col-->

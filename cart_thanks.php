@@ -1,3 +1,14 @@
+<?php 
+session_start();
+$user = $_SESSION['user'];
+$id_account = (int) $user['ID_account'];
+
+if($id_account == 0){
+    header('Location: dntgate.php');
+}
+
+unset($_SESSION['cart'][$id_account]);
+?>
 <!DOCTYPE html>
 <html>
 <head>

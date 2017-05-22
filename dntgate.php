@@ -6,6 +6,26 @@ require_once('includes/common/KT_common.php');
 // Load the tNG classes
 require_once('includes/tng/tNG.inc.php');
 
+//valid login
+if($_POST){
+    mysql_select_db($database_cnn_hoaly, $cnn_hoaly);
+   
+    $kt_login_user = trim($_POST['kt_login_user']);
+    $kt_login_password = trim($_POST['kt_login_password']);
+    
+    if($kt_login_user && $kt_login_password){
+        $strQuery = 'SELECT * FROM account WHERE username = "' . $kt_login_user . '" AND password = "' . md5($kt_login_password) . '"';
+        $query = mysql_query($strQuery);
+        $user = mysql_fetch_assoc($query);
+        
+        if($user){
+            session_start();
+            $_SESSION['user'] = $user;
+        }
+    }
+}
+
+
 // Make a transaction dispatcher instance
 $tNGs = new tNG_dispatcher("");
 
@@ -67,82 +87,13 @@ $totalRows_rscustom = mysql_num_rows($rscustom);
 <body><header class="top_header">
     	<div class="container">
         	<div class="row">
-                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                	<h4><b>Công ty TNHH Thương mại Lyan</b></h4>
-                    <h4>365 Sư Vạn Hạnh, Phường 12, Quận 10, TP.HCM</h4>
-                	<h4><a href="tel:0965777515">Hotline: 0965 777 515</a> - <a href="tel:0862822555">Tel: 08 62 822 555</a></h4>
-                    <h4>Email: <a href="mailto:hoalys.lyan@gmail.com">hoalys.lyan@gmail.com</a></h4>
-                </div>
-                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-center">
-                	<img src="images/logo.png" alt="Công Ty TNHH Thương Mại Lyan" width="200px">
-                </div>
-                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-right">
-                	<div class="row language_box">
-                    	<span class="submenu">
-                       		<a href="#" target="_self"><img src="images/vietnameseflag.png">&nbsp;&nbsp;Việt Nam</a>&nbsp;&nbsp;|&nbsp;&nbsp; 
-                        </span>
-                         <span class="submenu">
-                        	<a href="#" target="_self"><img src="images/englishflag.png">&nbsp;&nbsp;English</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                        </span>
-                         <span class="submenu">
-                        	<a href="#" target="_self"><img src="images/chineseflag.png">&nbsp;&nbsp;中文 (中国)</a> 
-                        </span> 
-                  </div>
-                	<div class="row language_box">
-                   		<span class="submenu">
-                        	<a href="#">Đăng nhập&nbsp;&nbsp;</a>
-                        </span>
-                        <span class="submenu">
-                        	<a href="#">Đăng ký&nbsp;&nbsp;</a>
-                        </span>
-                        <span class="submenu">
-                        	<a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Giỏ hàng <span class="badge">6</span></a>
-                        </span>
-                    </div>
-                </div>
+                <?php include('header.php'); ?>
             </div><br>
         	<div class="row">
             	<div class="hidden-xs hidden-sm col-md-1 col-lg-1">
                 </div>
                 <div class="col-xs-12 co-sm-12 col-md-10 col-lg-10">
-                	<nav class="navbar navbar-default" role="navigation">
-                        <div class="container-fluid">
-                            <!-- Brand and toggle get grouped for better mobile display -->
-                            <div class="navbar-header">
-                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                                    <span class="sr-only">Toggle navigation</span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                </button>
-                            </div>
-                    
-                            <!-- Collect the nav links, forms, and other content for toggling -->
-                            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                                <ul class="nav navbar-nav">
-                                    <li><a href="#">TRANG CHỦ</a></li>
-                                    <li><a href="#">GIỚI THIỆU</a></li>
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">SẢN PHẨM <b class="caret"></b></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Keo nối mi</a></li>
-                                            <li><a href="#">Mi nối</a></li>
-                                            <li><a href="#">Nhíp gắp mi</a></li>
-                                            <li><a href="#">Dưỡng mi</a></li>
-                                            <li><a href="#">Dụng cụ hỗ trợ</a></li>
-                                            <li><a href="#">Sản phẩm khác</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="#">ĐÀO TẠO</a></li>
-                                    <li><a href="#">CÂY NHÍP VÀNG</a></li>
-                                    <li><a href="#">SỰ KIỆN</a></li>
-                                    <li><a href="#">KIẾN THỨC CHUYÊN MÔN</a></li>
-                                    <li><a href="#">CHÍNH SÁCH</a></li>
-                                    <li><a href="#">LIÊN HỆ</a></li>
-                                </ul>
-                            </div><!-- /.navbar-collapse -->
-                        </div>
-                    </nav>
+                	<?php include("menubar.php"); ?>
                     </div>
                     <div class="hidden-xs hidden-sm col-md-1 col-lg-1">
                 	</div>
@@ -151,6 +102,7 @@ $totalRows_rscustom = mysql_num_rows($rscustom);
     </header> <!-- end header-->
     <div class="login">
     	<div class="container">
+            <p style="text-align: center; color: red">Khách chưa có tài khoản, vui lòng liên hệ số hotline (0965 777 515) hoặc email (hoalys.lyan@gmail.com) để được cấp tài khoản</p>
         <form method="post" id="form1" class="KT_tngformerror" action="<?php echo KT_escapeAttribute(KT_getFullUri()); ?>">
           <table cellpadding="2" cellspacing="0" class="KT_tngtable">
             <tr>
