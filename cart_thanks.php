@@ -27,7 +27,7 @@ if($_POST){
         $arrProdCart = $classPrice->productCartToAccessLevel();
         
         $grandTotal = 0;
-//    echo '<pre>';print_r($cart);die;  
+//    echo '<pre>';print_r($arrProdCart);die;  
         foreach($arrProdCart as $prod){
             $grandTotal += $prod['price_access_level'] * $prod['qty_cart'];
         }
@@ -42,13 +42,13 @@ if($_POST){
         $orderId = mysql_insert_id();
         
         //insert order_item
-        $strKeys = 'ID_order, qty_ordered, ID_product, grand_total, price_access_level';
+        $strKeys = 'ID_order, qty_ordered, ID_product, grand_total, price_access_level, ID_type_menubar2';
         
         $strValuesItem = '';
         foreach($arrProdCart as $prod){
             $grandTotal = $prod['price_access_level'] * $prod['qty_cart'];
             
-            $strValuesItem .= "('{$orderId}', '{$prod['qty_cart']}', '{$prod['ID_product']}', '{$grandTotal}', {$prod['price_access_level']}),";
+            $strValuesItem .= "('{$orderId}', '{$prod['qty_cart']}', '{$prod['ID_product']}', '{$grandTotal}', {$prod['price_access_level']}, {$prod['ID_type_menubar2']}),";
         }
         $strValuesItem = rtrim($strValuesItem, ',');
         

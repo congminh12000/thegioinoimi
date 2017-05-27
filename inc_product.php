@@ -39,6 +39,9 @@ if (isset($_GET["cat"])) {
 mysql_select_db($database_cnn_hoaly, $cnn_hoaly);
 $query_rs_product = sprintf("SELECT product.is_hidden_price, product.ID_product, product.productname, product.productname_EN, product.productimg, product.productprice, product.ID_danhmuc2, product.productorderlist, product.productapproval FROM product WHERE product.ID_danhmuc2=%s  AND product.productapproval=1 ORDER BY product.productorderlist ASC ", GetSQLValueString($KTColParam1_rs_product, "int"));
 $rs_product = mysql_query($query_rs_product, $cnn_hoaly) or die(mysql_error());
+
+//get list product
+$rs_product = mysql_query($query_rs_product, $cnn_hoaly) or die(mysql_error());
 $row_rs_product = mysql_fetch_assoc($rs_product);
 $totalRows_rs_product = mysql_num_rows($rs_product);
 
@@ -51,6 +54,19 @@ $arrPrice = $classPrice->priceCatToAccessLevel($KTColParam1_rs_product);
 session_start();
 $user = $_SESSION['user'];
 $id_account = (int) $user['ID_account'];
+
+//get type_menubar2
+$strQuery = "SELECT * FROM type_menubar2 WHERE tm2_status = 1 AND tm2_deleted = 0 AND ID_menubar2 = {$KTColParam1_rs_product}";
+$query = mysql_query($strQuery);
+$arrTypeMenubar2 = [];
+
+if (mysql_num_rows($query)) {
+    while ($row = mysql_fetch_assoc($query)) {
+        $arrTypeMenubar2[] = $row;
+    }
+}
+
+//var_dump($arrTypeMenubar2);
 ?>
 
 <?php do { ?>
@@ -67,7 +83,7 @@ $id_account = (int) $user['ID_account'];
         <?php endif; ?>
 
 
-        <p><a href="productdetail.php?cat=<?php echo $row_rs_product['ID_danhmuc2']; ?>&amp;id=<?php echo $row_rs_product['ID_product']; ?>" target="_self">Chi tiết</a>&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" target="_self" class="btn-add-cart" data-id='<?php echo $row_rs_product['ID_product']; ?>'>Giỏ hàng</a></p>
+        <p><a href="productdetail.php?cat=<?php echo $row_rs_product['ID_danhmuc2']; ?>&amp;id=<?php echo $row_rs_product['ID_product']; ?>" target="_self">Chi tiết</a>&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" target="_self" class="btn-add-cart" data-id='<?php echo $row_rs_product['ID_product']; ?>' data-is-type-menubar2="1" data-type-menubar2="<?php echo $KTColParam1_rs_product; ?>">Giỏ hàng</a></p>
         <p class="success-add-cart" style="display: none"><i class="fa fa-check" aria-hidden="true" style="color: #00BB00; font-size: 20px"></i></p>
     </div> <!-- end col product box-->
 <?php } while ($row_rs_product = mysql_fetch_assoc($rs_product)); ?>

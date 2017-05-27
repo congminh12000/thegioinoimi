@@ -17,6 +17,8 @@ require_once('../includes/tng/tNG.inc.php');
 // Load the KT_back class
 require_once('../includes/nxt/KT_back.php');
 
+require_once('../includes/my/general.php');
+
 // Make a transaction dispatcher instance
 $tNGs = new tNG_dispatcher("../");
 
@@ -232,6 +234,7 @@ if ($productId) {
         <title>Công Ty TNHH Thương Mại Lyan</title>
         <script type="text/javascript" src="p7ehc/p7EHCscripts.js"></script>
         <link href="p7csspbm2/p7csspbm2_12.css" rel="stylesheet" type="text/css">
+        <link href="../vendor/bootstrap.css" rel="stylesheet" type="text/css">
         <link href="p7csspbm2/p7csspbm2_print.css" rel="stylesheet" type="text/css" media="print">
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.min.css">
@@ -411,13 +414,17 @@ if ($productId) {
                                                 <td class="KT_th"><label for="productprice_<?php echo $cnt1; ?>">Giá công khai:<br>
                                                         (Viết liền không dấu)
                                                     </label></td>
-                                                <td colspan="2"><input type="text" name="productprice_<?php echo $cnt1; ?>" id="productprice_<?php echo $cnt1; ?>" value="<?php echo KT_escapeAttribute($row_rsproduct['productprice']); ?>" size="7" /> <br>
+                                                <td colspan=""><input type="text" name="productprice_<?php echo $cnt1; ?>" id="productprice_<?php echo $cnt1; ?>" value="<?php echo KT_escapeAttribute($row_rsproduct['productprice']); ?>" size="7" /> <br>
                                                     <?php echo $tNGs->displayFieldHint("productprice"); ?> <?php echo $tNGs->displayFieldError("product", "productprice", $cnt1); ?>
 
-                                                    <label>
-                                                        Ẩn / hiện
-                                                        <input type="checkbox" name="is_hidden_price_<?php echo $cnt1; ?>" value="1" <?php echo KT_escapeAttribute($row_rsproduct['is_hidden_price']) == 1 ? 'checked="checked"' : ''; ?> />
-                                                    </label>
+                                                    <!--                                                    <label>
+                                                                                                            Ẩn / hiện
+                                                                                                            <input type="checkbox" name="is_hidden_price_<?php // echo $cnt1;                  ?>" value="1" <?php // echo KT_escapeAttribute($row_rsproduct['is_hidden_price']) == 1 ? 'checked="checked"' : '';                  ?> />
+                                                                                                        </label>-->
+                                                </td>
+                                                <td>
+                                                    <label style="color: green">Bật giá công khai</label><input type="radio" name="is_hidden_price_<?php echo $cnt1; ?>" value="0" <?php echo KT_escapeAttribute($row_rsproduct['is_hidden_price']) == 0 ? 'checked="checked"' : ''; ?> /><br>
+                                                    <label style="color: red">Tắt giá công khai</label><input type="radio" name="is_hidden_price_<?php echo $cnt1; ?>" value="1" <?php echo KT_escapeAttribute($row_rsproduct['is_hidden_price']) == 1 ? 'checked="checked"' : ''; ?> />
                                                 </td>
                                             </tr>
                                             <?php if ($productId): ?>
@@ -441,27 +448,18 @@ if ($productId) {
                                             <tr>
                                                 <td class="KT_th"><label for="productkind_<?php echo $cnt1; ?>">Loại mi:<br>(Chỉ điền cho sản phẩm MI NỐI)
                                                     </label></td>
-                                                <td colspan="2"><select name="productkind_<?php echo $cnt1; ?>" id="productkind_<?php echo $cnt1; ?>">
-                                                        <option value="0" <?php
-                                                        if (!(strcmp(0, KT_escapeAttribute($row_rsproduct['productkind'])))) {
-                                                            echo "SELECTED";
-                                                        }
-                                                        ?>>None</option>
-                                                        <option value="1" <?php
-                                                        if (!(strcmp(1, KT_escapeAttribute($row_rsproduct['productkind'])))) {
-                                                            echo "SELECTED";
-                                                        }
-                                                        ?>>Dầy</option>
-                                                        <option value="2" <?php
-                                                        if (!(strcmp(2, KT_escapeAttribute($row_rsproduct['productkind'])))) {
-                                                            echo "SELECTED";
-                                                        }
-                                                        ?>>Cong</option>
-                                                        <option value="3" <?php
-                                                        if (!(strcmp(3, KT_escapeAttribute($row_rsproduct['productkind'])))) {
-                                                            echo "SELECTED";
-                                                        }
-                                                        ?>>Dài</option>
+                                                <td colspan="2">
+                                                    <select name="productkind_<?php echo $cnt1; ?>" id="productkind_<?php echo $cnt1; ?>">
+
+                                                        <?php
+                                                        $arrCateNoiMi = General::listCategoryMiNoi();
+                                                        foreach ($arrCateNoiMi as $key => $name):
+                                                            ?>
+                                                            <option value="<?php echo $key; ?>" <?php echo KT_escapeAttribute($row_rsproduct['productkind']) == $key ? 'selected' : ''; ?>><?php echo $name ?></option>
+                                                            <?php
+                                                        endforeach;
+                                                        ?>
+
                                                     </select>
                                                     <?php echo $tNGs->displayFieldError("product", "productkind", $cnt1); ?></td>
                                             </tr>

@@ -26,7 +26,7 @@ $cart_nums = (int) $cart['nums'];
                         	<a href="#" target="_self"><img src="images/englishflag.png">&nbsp;&nbsp;English</a>&nbsp;&nbsp;|&nbsp;&nbsp;
                         </span>
                          <span class="submenu">
-                        	<a href="#" target="_self"><img src="images/chineseflag.png">&nbsp;&nbsp;中文 (中国)</a> 
+                        	<a href="#" target="_self"><img src="images/taiwanflag.png">&nbsp;&nbsp;中文 (中国)</a> 
                         </span> 
                     </div> <!--end row-->
                 	<div class="row language_box">

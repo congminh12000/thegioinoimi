@@ -24,13 +24,16 @@ if ($_GET) {
         die;
     }
 
-    $strQuery = "SELECT * FROM order_item as oi LEFT JOIN product as p ON oi.ID_product = p.ID_product WHERE ID_order = {$orderId}";
+    $strQuery = "SELECT * FROM order_item as oi LEFT JOIN product as p ON oi.ID_product = p.ID_product "
+            . "LEFT JOIN type_menubar2 as tm2 ON tm2.ID_type_menubar2 = oi.ID_type_menubar2 "
+            . "WHERE ID_order = {$orderId}";
     $query = mysql_query($strQuery);
     $table = '</table>'
             . '<table class="table table-hover">'
             . '<thead>'
                        .'                 <tr>'
                                             .'<th>Tên sản phẩm</th>'
+            .'<th>Loại</th>'
                                             .'<th>Số lượng</th>'
                                             .'<th>Đơn giá</th>'
                                             .'<th>Thành tiền</th>'
@@ -43,6 +46,7 @@ if ($_GET) {
         while ($row = mysql_fetch_assoc($query)) {
             $table .= '<tr>'
                     . '<td>' . $row['productname'] . '</td>'
+                    . '<td>' . $row['tm2_name'] . '</td>'
                     . '<td>' . $row['qty_ordered'] . '</td>'
                     . '<td>' . $row['price_access_level'] . '</td>'
                     . '<td>' . $row['grand_total'] . ' đ</td>'

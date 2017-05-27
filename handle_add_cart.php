@@ -14,6 +14,7 @@ $arrResp = [
 
 if ($_GET) {
     $productId = (int) $_GET['productId'];
+    $typeMenubar2Id = (int) $_GET['typeMenubar2Id'];
 
     if (!$productId) {
         $arrResp['message'] = 'Lỗi !';
@@ -33,7 +34,7 @@ if ($_GET) {
     $userId = (int) $user['ID_account'];
 
     //sl 1 sp
-    $sessionProdId = $_SESSION['cart'][$userId]['arrProd'][$productId];
+    $sessionProdId = $_SESSION['cart'][$userId]['arrProd'][$productId][$typeMenubar2Id];
 
     if (empty($sessionProdId)) {
         //sl tong
@@ -41,7 +42,7 @@ if ($_GET) {
     }
 
     //sl 1 sp
-    $_SESSION['cart'][$userId]['arrProd'][$productId]['sl'] += 1;
+    $_SESSION['cart'][$userId]['arrProd'][$productId][$typeMenubar2Id]['sl'] += 1;
 
     $nums = $_SESSION['cart'][$userId]['nums'];
 //echo '<pre>';print_r($_SESSION);die;

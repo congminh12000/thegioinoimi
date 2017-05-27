@@ -11,11 +11,13 @@
 <link rel="stylesheet" href="vendor/font-awesome.css">
 <link rel="stylesheet" href="style-primary.css">
 <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="css/sweet-alert-2.min.css">
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
 <link rel="icon" href="images/favicon.ico" type="image/ico" sizes="32x32">
 <script src="vendor/jquery.min.js" type="text/javascript"></script>
 <script src="vendor/bootstrap.js" type="text/javascript"></script>
+<script src="js/sweet-alert-2.min.js" type="text/javascript"></script>
 <script src="build/mediaelement-and-player.min.js"></script><!-- Audio/Video Player jQuery -->
 <script src="build/mep-feature-playlist.js"></script><!-- Playlist JavaSCript -->
 <link rel="stylesheet" href="css/progression-player.css" /><!-- Default Player Styles -->	

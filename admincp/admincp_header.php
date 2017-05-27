@@ -1,3 +1,12 @@
+<?php 
+session_start();
+$user = $_SESSION['user'];
+$accesslevel = (int) $user['accesslevel'];
+
+if($accesslevel != 1){
+    header('Location: ../index.php');
+}
+?>
 <div class="logo">
       <a href="admincp.php" target="_self"><img src="../images/logo.png" alt="Hoa Ly's Eyelash" width="50px"></a>
       <span class="logonotes"> - Content Management System</span>

@@ -210,8 +210,10 @@ $nav_listproduct2->checkBoundries();
 
                             <div class="panel panel-success"> 
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Ẩn / hiện giá công khai tất cả sản phẩm
-                                        <input type="checkbox" id="btn-hidden-price" checked data-toggle="toggle" data-on="Bật" data-off="Tắt">
+                                    <h3 class="panel-title">Bật / tắt giá công khai tất cả sản phẩm
+                                        <button class="btn btn-success btn-hidden-price" value="0" style="float: right">Bật</button>
+                                        <button class="btn btn-danger btn-hidden-price" value="1" style="margin-left: 66%">Tắt</button>
+                                        <!--<input type="checkbox" id="btn-hidden-price" checked data-toggle="toggle" data-on="Bật" data-off="Tắt">-->
                                     </h3>
                                 </div> 
                             </div>
@@ -387,8 +389,9 @@ mysql_free_result($rsproduct1);
 ?>
 <script>
     $(document).ready(function () {
-        $('#btn-hidden-price').change(function () {
-            var isCheck = $(this).prop('checked');
+        $('.btn-hidden-price').click(function () {
+            var isCheck = $(this).val();
+
             $.ajax({
                 url: 'handle_hidden_all_price.php',
                 type: 'GET',
@@ -397,10 +400,13 @@ mysql_free_result($rsproduct1);
                 },
                 dataType: 'JSON',
                 beforeSend: function () {
-//                    $('#loading-mask').show();
+                    $('#loading-mask').show();
                 },
                 success: function (result) {
-//                    $('#loading-mask').hide();
+
+                    setTimeout(function () {
+                        $('#loading-mask').hide();
+                    }, 1000);
                 }
             })
         })

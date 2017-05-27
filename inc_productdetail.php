@@ -51,6 +51,10 @@ $price = $classPrice->priceDetailToAccessLevel($KTColParam1_rs_productdetail);
 session_start();
 $user = $_SESSION['user'];
 $id_account = (int) $user['ID_account'];
+
+//get type menubar2
+$strQuery = "SELECT * FROM type_menubar2 WHERE tm2_status = 1 AND tm2_deleted = 0 AND ID_menubar2 = {$row_rs_productdetail['ID_danhmuc2']}";
+$query = mysql_query($strQuery);
 ?>
 
 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
@@ -72,6 +76,25 @@ $id_account = (int) $user['ID_account'];
     <h5><b>Số lượng:</b> </h5>
     <h5><b>Chất liệu:</b> <?php echo $row_rs_productdetail['productkind']; ?></h5>
     <h5><b>Màu sắc:</b> <?php echo $row_rs_productdetail['productcolor']; ?></h5>
+
+    <?php
+    //get cate noi mi
+    if (mysql_num_rows($query)):
+        ?>
+        <h5><b>Loại :</b> 
+            <select class="type-menubar2">
+                <?php while ($row = mysql_fetch_assoc($query)): ?>
+                    <option value="<?php echo $row['ID_type_menubar2']; ?>"><?php echo $row['tm2_name']; ?></option>
+                <?php endwhile; ?>
+            </select>
+        </h5>
+        <?php
+    else:
+        ?>
+        <input type="hidden" class="type-menubar2" value="0" />
+    <?php
+    endif;
+    ?>
     <a href="javascript:void(0);" class="btn btn-info btn-add-cart" data-id="<?php echo $row_rs_productdetail['ID_product']; ?>" role="button">Thêm giỏ hàng</a>&nbsp;&nbsp;&nbsp; <a href="cart.php" class="btn btn-info" role="button">Thanh toán</a>
     <p class="success-add-cart" style="display: none"><i class="fa fa-check" aria-hidden="true" style="color: #00BB00; font-size: 20px"></i></p>
 </div> <!-- end col -->
