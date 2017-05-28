@@ -39,6 +39,10 @@ $page = ( isset($_GET['page']) ) ? $_GET['page'] : 1;
 $links = ( isset($_GET['links']) ) ? $_GET['links'] : 1;
 
 $results = $classPaginator->getData($limit, $page);
+
+//format price
+require_once('../includes/my/format-price.php');
+$formatPrice = new FormatPrice();
 ?>
 
 <!doctype html>
@@ -155,7 +159,7 @@ $results = $classPaginator->getData($limit, $page);
                                                     <td><?php echo $row['created_date']; ?></td>
                                                     <td><span class="label label-success"><?php echo $classOrder->getStatus($row['status']); ?></span></td>
                                                     <td><?php echo $row['total_qty']; ?></td>
-                                                    <td><?php echo $row['grand_total']; ?> đ</td>
+                                                    <td><?php echo $formatPrice->format($row['grand_total']); ?></td>
                                                     <td class="text-center">
                                                         <a href="javascript:void(0);" class="btn-detail" data-id="<?php echo $row['ID_order']; ?>">
                                                             <i class="fa fa-plus" aria-hidden="true" style="color: #f9a020"></i>

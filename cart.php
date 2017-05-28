@@ -30,6 +30,10 @@ if ($nums) {
     }
 }
 //echo'<pre>';print_r($_SESSION);die;
+
+//format price
+require_once('includes/my/format-price.php');
+$formatPrice = new FormatPrice();
 ?>
 
 <!DOCTYPE html>
@@ -121,7 +125,7 @@ if ($nums) {
                                         <button class="btn btn-success btn-update-sl" style="margin-top: 5px" data-id="<?php echo $row['ID_product']; ?>" data-type-menubar2="<?php echo $row['ID_type_menubar2']; ?>" data-price="<?php echo $row['price_access_level']; ?>">Cập nhật số lượng</button>
                                     </div>
                                     <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 text-center">
-                                        <span class="total-price"><?php echo $row['price_access_level'] * $sl . ' đ'; ?></span>
+                                        <span class="total-price"><?php echo $formatPrice->format($row['price_access_level'] * $sl); ?></span>
                                     </div>
                                 </div> <!-- end row  cart-product-->
                             <?php endforeach; ?>
@@ -135,7 +139,7 @@ if ($nums) {
                                     <h4><b>THÀNH TIỀN</b></h4>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
-                                    <h4><b class="sum-total" data-price="<?php echo $priceTotal; ?>"><?php echo $priceTotal . 'đ'; ?></b></h4>
+                                    <h4><b class="sum-total" data-price="<?php echo $priceTotal; ?>"><?php echo $formatPrice->format($priceTotal); ?></b></h4>
                                 </div>
                             </div> <!-- end row cart-total-price-->
                             <div class="row receiveinfo">

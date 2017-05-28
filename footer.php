@@ -80,7 +80,25 @@
                     typeMenubar2Id = 0;
                 }
 
-                ajaxHandleAddCart(that, productId, typeMenubar2Id)
+                var _html = '<div class="col-md-5"><label>Số lượng: </label></div><div class="col-md-6 text-left"><input id="swal-qty" type="number" class="" min="1" value="1"></div><br><br>';
+
+                swal({
+                    title: '<label style="color: #7E3F98">Thông tin</label>',
+                    html: _html,
+                    allowOutsideClick: false,
+                    confirmButtonText: 'Hoàn tất',
+                    cancelButtonText: 'Hủy bỏ',
+                    preConfirm: function () {
+                        return new Promise(function (resolve) {
+                            var swalQty = $('#swal-qty').val();
+
+                            ajaxHandleAddCart(that, productId, typeMenubar2Id, swalQty)
+                            resolve()
+                        })
+                    },
+                    showCloseButton: true,
+                    showCancelButton: true
+                })
             }
 
         });
@@ -91,6 +109,8 @@
             var sl = $(this).closest('div').find('input.so-luong-sp').val();
             var price = $(this).data('price');
             var typeMenubar2Id = $(this).data('type-menubar2');
+            var oldSumTotal = $('.sum-total').data('price');
+            
             if (productId == '' || productId == 0) {
                 alert('Lỗi !');
                 return false;
@@ -103,18 +123,19 @@
                 data: {
                     productId: productId,
                     sl: sl,
+                    price: price,
+                    oldSumTotal: oldSumTotal,
                     typeMenubar2Id: typeMenubar2Id
                 },
                 success: function (result) {
 
                     if (!result.isError) {
-                        var totalPriceProd = price * sl;
-                        var oldSl = result.data.oldSl;
-                        var oldPrice = oldSl * price;
-                        var oldSumTotal = $('.sum-total').data('price');
-                        var newSumTotal = oldSumTotal - oldPrice + totalPriceProd;
-                        that.closest('.cart-product').find('.total-price').html(totalPriceProd + ' đ');
-                        $('.sum-total').html(newSumTotal + ' đ');
+                        var htmlTotalPriceProd = result.data.htmlTotalPriceProd;
+                        var newSumTotal = result.data.newSumTotal;
+                        var htmlNewSumTotal = result.data.htmlNewSumTotal;
+                        
+                        that.closest('.cart-product').find('.total-price').html(htmlTotalPriceProd);
+                        $('.sum-total').html(htmlNewSumTotal);
                         $('.sum-total').data('price', newSumTotal);
                     } else {
 //                    alert(result.message);
@@ -169,37 +190,52 @@
                 },
                 success: function (result) {
 
+                    var _html = '<div class="col-md-5"><label>Số lượng: </label></div><div class="col-md-6 text-left"><input id="swal-qty" type="number" class="" min="1" value="1"></div><br><br>';
+
                     if (!result.isError) {
                         var arrType = result.data.arrType;
-                        var _inputOptions = {};
+                        var _inputOptions = '';
 
                         $.each(arrType, function (k, v) {
-                            _inputOptions[v.ID_type_menubar2] = v.tm2_name;
+                            _inputOptions += '<option value="' + v.ID_type_menubar2 + '">' + v.tm2_name + '</option>';
                         })
 
-                        swal({
-                            title: 'Vui lòng chọn loại sản phẩm ',
-                            input: 'select',
-                            inputOptions: _inputOptions,
-                            inputValidator: function (value) {
-                                return new Promise(function (resolve, reject) {
+                        _html += '<div class="col-md-5"><label> Loại: <label></div>';
+                        _html += '<div class="col-md-6 text-left"><select id="swal-type">';
+                        _html += _inputOptions;
+                        _html += '</select></div>';
 
-                                    ajaxHandleAddCart(that, productId, value);
-                                    resolve()
-                                })
-                            },
-                            showCloseButton: true,
-                            showCancelButton: true
-                        })
                     } else {
-                        ajaxHandleAddCart(that, productId, 0);
                     }
+
+                    swal({
+                        title: '<label style="color: #7E3F98">Thông tin</label>',
+                        html: _html,
+                        allowOutsideClick: false,
+                        confirmButtonText: 'Hoàn tất',
+                        cancelButtonText: 'Hủy bỏ',
+                        preConfirm: function () {
+                            return new Promise(function (resolve) {
+                                var swalType = $('#swal-type').val();
+                                var swalQty = $('#swal-qty').val();
+                                
+                                if (typeof swalType == 'undefined') {
+                                    swalType = 0;
+                                }
+
+                                ajaxHandleAddCart(that, productId, swalType, swalQty);
+                                resolve()
+                            })
+                        },
+                        showCloseButton: true,
+                        showCancelButton: true
+                    })
                 }
             });
 
         }
 
-        function ajaxHandleAddCart(that, productId, typeMenubar2Id) {
+        function ajaxHandleAddCart(that, productId, typeMenubar2Id, qty) {
 
             if (productId == '' || productId == 0) {
                 alert('Lỗi !');
@@ -212,22 +248,15 @@
                 dataType: 'JSON',
                 data: {
                     productId: productId,
-                    typeMenubar2Id: typeMenubar2Id
+                    typeMenubar2Id: typeMenubar2Id,
+                    qty: qty
                 },
                 success: function (result) {
 
                     if (!result.isError) {
                         var nums = result.data.nums;
-                        var icon = '<i class="glyphicon glyphicon-ok"></i>';
                         $('.cart-nums').html(nums);
-                        //show success
-                        that.closest('div').find('.success-add-cart').show(function () {
-                            var _that = $(this);
-
-                            setTimeout(function () {
-                                _that.hide();
-                            }, 3000);
-                        });
+                        
                     } else {
 //                    alert(result.message);
                     }

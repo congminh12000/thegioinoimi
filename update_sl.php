@@ -8,6 +8,10 @@
 require_once('Connections/cnn_hoaly.php');
 mysql_select_db($database_cnn_hoaly, $cnn_hoaly);
 
+//format price
+require_once('includes/my/format-price.php');
+$formatPrice = new FormatPrice();
+
 $arrResp = [
     'isError' => true,
     'message' => 'Error',
@@ -17,7 +21,9 @@ $arrResp = [
 if ($_GET) {
     $productId = (int) $_GET['productId'];
     $sl = (int) $_GET['sl'];
+    $price = $_GET['price'];
     $typeMenubar2Id = (int) $_GET['typeMenubar2Id'];
+    $oldSumTotal = $_GET['oldSumTotal'];
 
     if (!$productId || $sl <= 0) {
         $arrResp['message'] = 'Lỗi !';
@@ -50,11 +56,22 @@ if ($_GET) {
     //update new sl
     $_SESSION['cart'][$userId]['arrProd'][$productId][$ID_type_menubar2]['sl'] = $sl;
 //var_dump($_SESSION['cart'][$userId]['arrProd'][$productId][$ID_type_menubar2]);die;
+    
+    //format price
+    $totalPriceProd = $price * $sl;
+    $htmlTotalPriceProd = $formatPrice->format($totalPriceProd);
+    $oldPrice = $oldSl * $price;
+    $newSumTotal = $oldSumTotal - $oldPrice + $totalPriceProd;
+    $htmlNewSumTotal = $formatPrice->format($newSumTotal);
+    
     $arrResp = [
         'isError' => false,
         'message' => 'Success',
         'data' => [
-            'oldSl' => $oldSl
+            'oldSl' => $oldSl,
+            'htmlTotalPriceProd' => $htmlTotalPriceProd,
+            'newSumTotal' => $newSumTotal,
+            'htmlNewSumTotal' => $htmlNewSumTotal
         ]
     ];
 }

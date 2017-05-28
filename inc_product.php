@@ -32,6 +32,10 @@ if (!function_exists("GetSQLValueString")) {
 
 }
 
+//format price
+require_once('includes/my/format-price.php');
+$formatPrice = new FormatPrice();
+
 $KTColParam1_rs_product = "2";
 if (isset($_GET["cat"])) {
     $KTColParam1_rs_product = $_GET["cat"];
@@ -68,26 +72,26 @@ if (mysql_num_rows($query)) {
 
 //var_dump($arrTypeMenubar2);
 ?>
+<div class="product">
+    <?php do { ?>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 text-center productbox productboxdetail">
+            <a href="productdetail.php?cat=<?php echo $row_rs_product['ID_danhmuc2']; ?>&amp;id=<?php echo $row_rs_product['ID_product']; ?>" target="_self"><img src="images/product/<?php echo $row_rs_product['productimg']; ?>" alt="Công Ty TNHH Thương Mại Lyan"></a>
+            <h4><a href="productdetail.php?cat=<?php echo $row_rs_product['ID_danhmuc2']; ?>&amp;id=<?php echo $row_rs_product['ID_product']; ?>" target="_self"><?php echo $row_rs_product['productname']; ?></a></h4>
 
-<?php do { ?>
-    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 text-center productbox">
-        <a href="productdetail.php?cat=<?php echo $row_rs_product['ID_danhmuc2']; ?>&amp;id=<?php echo $row_rs_product['ID_product']; ?>" target="_self"><img src="images/product/<?php echo $row_rs_product['productimg']; ?>" alt="Công Ty TNHH Thương Mại Lyan"></a>
-        <h4><a href="productdetail.php?cat=<?php echo $row_rs_product['ID_danhmuc2']; ?>&amp;id=<?php echo $row_rs_product['ID_product']; ?>" target="_self"><?php echo $row_rs_product['productname']; ?></a></h4>
-
-        <?php if ($id_account): ?>
-            <p><?php echo isset($arrPrice[$row_rs_product['ID_product']]) ? $arrPrice[$row_rs_product['ID_product']] : $row_rs_product['productprice']; ?>đ</p>
-        <?php else: ?>
-            <?php if (!$row_rs_product['is_hidden_price']): ?>
-                <p><?php echo isset($arrPrice[$row_rs_product['ID_product']]) ? $arrPrice[$row_rs_product['ID_product']] : $row_rs_product['productprice']; ?>đ</p>
+            <?php if ($id_account): ?>
+                <p><?php echo isset($arrPrice[$row_rs_product['ID_product']]) ? $formatPrice->format($arrPrice[$row_rs_product['ID_product']]) : $formatPrice->format($row_rs_product['productprice']); ?></p>
+            <?php else: ?>
+                <?php if (!$row_rs_product['is_hidden_price']): ?>
+                    <p><?php echo isset($arrPrice[$row_rs_product['ID_product']]) ? $formatPrice->format($arrPrice[$row_rs_product['ID_product']]) : $formatPrice->format($row_rs_product['productprice']); ?></p>
+                <?php endif; ?>
             <?php endif; ?>
-        <?php endif; ?>
 
 
-        <p><a href="productdetail.php?cat=<?php echo $row_rs_product['ID_danhmuc2']; ?>&amp;id=<?php echo $row_rs_product['ID_product']; ?>" target="_self">Chi tiết</a>&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" target="_self" class="btn-add-cart" data-id='<?php echo $row_rs_product['ID_product']; ?>' data-is-type-menubar2="1" data-type-menubar2="<?php echo $KTColParam1_rs_product; ?>">Giỏ hàng</a></p>
-        <p class="success-add-cart" style="display: none"><i class="fa fa-check" aria-hidden="true" style="color: #00BB00; font-size: 20px"></i></p>
-    </div> <!-- end col product box-->
-<?php } while ($row_rs_product = mysql_fetch_assoc($rs_product)); ?>
+            <p><a href="cart.php" class="btn btn-info" role="button">Thanh toán</a>&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" target="_self" class="btn btn-info btn-add-cart" data-id='<?php echo $row_rs_product['ID_product']; ?>' data-is-type-menubar2="1" data-type-menubar2="<?php echo $KTColParam1_rs_product; ?>">Thêm giỏ hàng</a></p>
+        </div> <!-- end col product box-->
 
+    <?php } while ($row_rs_product = mysql_fetch_assoc($rs_product)); ?>
+</div>
 <?php
 mysql_free_result($rs_product);
 ?>

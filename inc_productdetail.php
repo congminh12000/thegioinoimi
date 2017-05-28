@@ -32,6 +32,10 @@ if (!function_exists("GetSQLValueString")) {
 
 }
 
+//format price
+require_once('includes/my/format-price.php');
+$formatPrice = new FormatPrice();
+
 $KTColParam1_rs_productdetail = "1";
 if (isset($_GET["id"])) {
     $KTColParam1_rs_productdetail = $_GET["id"];
@@ -65,15 +69,14 @@ $query = mysql_query($strQuery);
     <span class="line3"></span>
 
     <?php if ($id_account): ?>
-        <h5><b>Giá bán:</b> <?php echo $price !== false ? $price : $row_rs_productdetail['productprice']; ?>đ</h5>
+        <h5><b>Giá bán:</b> <?php echo $price !== false ? $formatPrice->format($price) : $formatPrice->format($row_rs_productdetail['productprice']); ?></h5>
     <?php else: ?>
         <?php if (!$row_rs_productdetail['is_hidden_price']): ?>
-            <h5><b>Giá bán:</b> <?php echo $price !== false ? $price : $row_rs_productdetail['productprice']; ?>đ</h5>
+            <h5><b>Giá bán:</b> <?php echo $price !== false ? $formatPrice->format($price) : $formatPrice->format($row_rs_productdetail['productprice']); ?></h5>
         <?php endif; ?>
     <?php endif; ?>
 
 
-    <h5><b>Số lượng:</b> </h5>
     <h5><b>Chất liệu:</b> <?php echo $row_rs_productdetail['productkind']; ?></h5>
     <h5><b>Màu sắc:</b> <?php echo $row_rs_productdetail['productcolor']; ?></h5>
 
@@ -96,7 +99,6 @@ $query = mysql_query($strQuery);
     endif;
     ?>
     <a href="javascript:void(0);" class="btn btn-info btn-add-cart" data-id="<?php echo $row_rs_productdetail['ID_product']; ?>" role="button">Thêm giỏ hàng</a>&nbsp;&nbsp;&nbsp; <a href="cart.php" class="btn btn-info" role="button">Thanh toán</a>
-    <p class="success-add-cart" style="display: none"><i class="fa fa-check" aria-hidden="true" style="color: #00BB00; font-size: 20px"></i></p>
 </div> <!-- end col -->
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 boxproductcaption">

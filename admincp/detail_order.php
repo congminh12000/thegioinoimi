@@ -9,6 +9,10 @@
 require_once('../Connections/cnn_hoaly.php');
 mysql_select_db($database_cnn_hoaly, $cnn_hoaly);
 
+//format price
+require_once('../includes/my/format-price.php');
+$formatPrice = new FormatPrice();
+
 $arrResp = [
     'isError' => true,
     'message' => 'Error',
@@ -48,8 +52,8 @@ if ($_GET) {
                     . '<td>' . $row['productname'] . '</td>'
                     . '<td>' . $row['tm2_name'] . '</td>'
                     . '<td>' . $row['qty_ordered'] . '</td>'
-                    . '<td>' . $row['price_access_level'] . '</td>'
-                    . '<td>' . $row['grand_total'] . ' đ</td>'
+                    . '<td>' . $formatPrice->format($row['price_access_level']) . '</td>'
+                    . '<td>' . $formatPrice->format($row['grand_total']) . '</td>'
                     . '</tr>';
         }
     } else {
