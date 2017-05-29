@@ -77,7 +77,7 @@ $query = mysql_query($strQuery);
     <?php endif; ?>
 
 
-    <h5><b>Chất liệu:</b> <?php echo $row_rs_productdetail['productkind']; ?></h5>
+    <h5><b>Chất liệu:</b> <?php echo $row_rs_productdetail['productmaterial']; ?></h5>
     <h5><b>Màu sắc:</b> <?php echo $row_rs_productdetail['productcolor']; ?></h5>
 
     <?php
