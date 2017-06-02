@@ -30,11 +30,21 @@ class Price {
 
         $row = mysql_fetch_assoc($query);
 
+        if ($row) {
+            return $row['price'];
+        }
+
+        //if not get price accesslevel => get price public
+        $strQuery = 'SELECT * FROM product WHERE ID_product = ' . $productId;
+        $query = mysql_query($strQuery);
+
+        $row = mysql_fetch_assoc($query);
+
         if (empty($row)) {
             return false;
         }
 
-        return $row['price'];
+        return $row['productprice'];
     }
 
     public function priceCatToAccessLevel($cat_id) {
@@ -77,8 +87,18 @@ class Price {
         $strQuery = 'SELECT * FROM price WHERE product_id IN (' . implode(',', $arrProdId) . ') AND accesslevel_id = ' . $accesslevel . ' AND status = 1 AND deleted = 0';
         $query = mysql_query($strQuery);
 
-        while ($row = mysql_fetch_assoc($query)) {
-            $arrPrice[$row['product_id']] = $row['price'];
+        if (mysql_num_rows($query)) {
+
+            while ($row = mysql_fetch_assoc($query)) {
+                $arrPrice[$row['product_id']] = $row['price'];
+            }
+
+            return $arrPrice;
+        }
+
+        //if not get price accesslevel => get price public
+        foreach ($arrProd as $prod) {
+            $arrPrice[$prod['ID_product']] = $prod['productprice'];
         }
 
         return $arrPrice;
@@ -160,7 +180,7 @@ class Price {
 
             $arrDataCart[] = $_item;
         }
-//echo '<pre>';print_r($arrDataCart);die;
+//echo '<pre>';print_r($arrPrice);die;
         return $arrDataCart;
     }
 
@@ -186,8 +206,25 @@ class Price {
         $strQuery = 'SELECT * FROM price WHERE product_id IN (' . implode(',', $arrProdId) . ') AND accesslevel_id = ' . $accesslevel . ' AND status = 1 AND deleted = 0';
         $query = mysql_query($strQuery);
 
+        if (mysql_num_rows($query)) {
+
+            while ($row = mysql_fetch_assoc($query)) {
+                $arrPrice[$row['product_id']] = $row['price'];
+            }
+
+            return $arrPrice;
+        }
+
+        //if not get price accesslevel => get price public
+        $strQuery = 'SELECT * FROM product WHERE ID_product IN (' . implode(',', $arrProdId) . ')';
+        $query = mysql_query($strQuery);
+
+        if (!mysql_num_rows($query)) {
+            return false;
+        }
+
         while ($row = mysql_fetch_assoc($query)) {
-            $arrPrice[$row['product_id']] = $row['price'];
+            $arrPrice[$row['ID_product']] = $row['productprice'];
         }
 
         return $arrPrice;

@@ -41,7 +41,7 @@ if (isset($_GET["id"])) {
     $KTColParam1_rs_productdetail = $_GET["id"];
 }
 mysql_select_db($database_cnn_hoaly, $cnn_hoaly);
-$query_rs_productdetail = sprintf("SELECT product.is_hidden_price, product.ID_product, product.productname_EN, product.productname, product.productimg, product.productmaterial, product.productcolor, product.productprice, product.productkind, product.productdetail, product.productdetail_EN, product.productmaterial_EN, product.productcolor_EN, product.ID_danhmuc2 FROM product WHERE product.ID_product=%s ", GetSQLValueString($KTColParam1_rs_productdetail, "int"));
+$query_rs_productdetail = sprintf("SELECT * FROM product WHERE product.ID_product=%s ", GetSQLValueString($KTColParam1_rs_productdetail, "int"));
 $rs_productdetail = mysql_query($query_rs_productdetail, $cnn_hoaly) or die(mysql_error());
 $row_rs_productdetail = mysql_fetch_assoc($rs_productdetail);
 $totalRows_rs_productdetail = mysql_num_rows($rs_productdetail);
@@ -69,7 +69,7 @@ $query = mysql_query($strQuery);
     <span class="line3"></span>
 
     <?php if ($id_account): ?>
-        <h5><b>Giá bán:</b> <?php echo $price !== false ? $formatPrice->format($price) : $formatPrice->format($row_rs_productdetail['productprice']); ?></h5>
+        <h5><b>Giá bán:</b> <?php echo $price !== false ? $formatPrice->format($price) : ''; ?></h5>
     <?php else: ?>
         <?php if (!$row_rs_productdetail['is_hidden_price']): ?>
             <h5><b>Giá bán:</b> <?php echo $price !== false ? $formatPrice->format($price) : $formatPrice->format($row_rs_productdetail['productprice']); ?></h5>

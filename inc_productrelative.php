@@ -50,7 +50,7 @@ if (isset($_GET['id'])) {
     $colname2_rs_productrelative = $_GET['id'];
 }
 mysql_select_db($database_cnn_hoaly, $cnn_hoaly);
-$query_rs_productrelative = sprintf("SELECT ID_product, productname, productname_EN, productimg, productprice, productapproval, productorderlist, ID_danhmuc2 FROM product WHERE ID_danhmuc2 = %s AND productapproval = 1 AND ID_product != %s ORDER BY productorderlist ASC LIMIT 0,3", GetSQLValueString($colname_rs_productrelative, "int"), GetSQLValueString($colname2_rs_productrelative, "int"));
+$query_rs_productrelative = sprintf("SELECT * FROM product WHERE ID_danhmuc2 = %s AND productapproval = 1 AND ID_product != %s ORDER BY productorderlist ASC LIMIT 0,3", GetSQLValueString($colname_rs_productrelative, "int"), GetSQLValueString($colname2_rs_productrelative, "int"));
 $rs_productrelative = mysql_query($query_rs_productrelative, $cnn_hoaly) or die(mysql_error());
 $row_rs_productrelative = mysql_fetch_assoc($rs_productrelative);
 $totalRows_rs_productrelative = mysql_num_rows($rs_productrelative);
@@ -67,7 +67,7 @@ $arrPrice = $classPrice->priceCatToAccessLevel($colname_rs_productrelative);
             <h4><a href="productdetail.php?cat=<?php echo $row_rs_productrelative['ID_danhmuc2']; ?>&id=<?php echo $row_rs_productrelative['ID_product']; ?>" target="_self"><?php echo $row_rs_productrelative['productname']; ?></a></h4>
 
             <?php if ($id_account): ?>
-                <p><?php echo isset($arrPrice[$row_rs_productrelative['ID_product']]) ? $formatPrice->format($arrPrice[$row_rs_productrelative['ID_product']]) : $formatPrice->format($row_rs_productrelative['productprice']); ?></p>
+                <p><?php echo isset($arrPrice[$row_rs_productrelative['ID_product']]) ? $formatPrice->format($arrPrice[$row_rs_productrelative['ID_product']]) : ''; ?></p>
             <?php else: ?>
                 <?php if (!$row_rs_productrelative['is_hidden_price']): ?>
                     <p><?php echo isset($arrPrice[$row_rs_productrelative['ID_product']]) ? $formatPrice->format($arrPrice[$row_rs_productrelative['ID_product']]) : $formatPrice->format($row_rs_productrelative['productprice']); ?></p>

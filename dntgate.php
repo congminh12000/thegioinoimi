@@ -90,91 +90,42 @@ $totalRows_rscustom = mysql_num_rows($rscustom);
                 <?php include('header.php'); ?>
             </div><br>
         	<div class="row">
-            	<div class="hidden-xs hidden-sm col-md-1 col-lg-1">
-                </div>
-                <div class="col-xs-12 co-sm-12 col-md-10 col-lg-10">
+                <div class="col-xs-12 co-sm-12 col-md-12 col-lg-12">
                 	<?php include("menubar.php"); ?>
-                    </div>
-                    <div class="hidden-xs hidden-sm col-md-1 col-lg-1">
-                	</div>
+                </div> <!-- end col-->
            	 </div> <!-- end row-->
         </div> <!-- end container-->
     </header> <!-- end header-->
-    <div class="login">
+    <div class="login" data-sb="fadeInUp">
     	<div class="container">
+          <div class="col-xs-12 co-sm-12 col-md-10 col-lg-10 col-md-push-1">
             <p style="text-align: center; color: red">Khách chưa có tài khoản, vui lòng liên hệ số hotline (0965 777 515) hoặc email (hoalys.lyan@gmail.com) để được cấp tài khoản</p>
-        <form method="post" id="form1" class="KT_tngformerror" action="<?php echo KT_escapeAttribute(KT_getFullUri()); ?>">
+        <form method="post" id="form1" action="<?php echo KT_escapeAttribute(KT_getFullUri()); ?>">
           <table cellpadding="2" cellspacing="0" class="KT_tngtable">
             <tr>
-              <td class="KT_th"><label for="kt_login_user">Username:</label></td>
+              <td><label for="kt_login_user">Username:</label></td>
               <td><input type="text" name="kt_login_user" id="kt_login_user" value="<?php echo KT_escapeAttribute($row_rscustom['kt_login_user']); ?>" size="32" />
                 <?php echo $tNGs->displayFieldHint("kt_login_user");?> <?php echo $tNGs->displayFieldError("custom", "kt_login_user"); ?></td>
             </tr>
             <tr>
-              <td class="KT_th"><label for="kt_login_password">Password:</label></td>
+              <td><label for="kt_login_password">Password:</label></td>
               <td><input type="password" name="kt_login_password" id="kt_login_password" value="" size="32" />
                 <?php echo $tNGs->displayFieldHint("kt_login_password");?> <?php echo $tNGs->displayFieldError("custom", "kt_login_password"); ?></td>
             </tr>
             <tr>
-              <td class="KT_th"><label for="kt_login_rememberme">Remember me:</label></td>
+              <td><label for="kt_login_rememberme">Remember me:</label></td>
               <td><input  <?php if (!(strcmp(KT_escapeAttribute($row_rscustom['kt_login_rememberme']),"1"))) {echo "checked";} ?> type="checkbox" name="kt_login_rememberme" id="kt_login_rememberme" value="1" />
                 <?php echo $tNGs->displayFieldError("custom", "kt_login_rememberme"); ?></td>
             </tr>
-            <tr class="KT_buttons">
-              <td colspan="2"><input type="submit" name="kt_login1" id="kt_login1" value="Đăng nhập" /></td>
+            <tr class="text-center">
+              <td colspan="2"><input type="submit" name="kt_login1" id="kt_login1" value="Đăng nhập" class="btn btn-info"/>&nbsp;&nbsp;&nbsp;<a href="registration.php" class="btn btn-info" role="button">Đăng ký</a></td>
             </tr>
           </table>
-        </form>
+        </form> <!-- end form-->
+        </div> <!-- end col-->
         <p>&nbsp;</p>
         </div> <!-- end container-->
         </div> <!-- end login-->
-<footer class="bottom_tail">
-    	<div class="container">
-        	<div class="row">
-            	<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 box_footer">
-                	<img src="images/logo-ora.png" alt="Công Ty TNHH Thương Mại Lyan" height="60px">
-                	<p>ORA Nails Eyelash Salon là salon nhượng quyền chuyên chăm sóc mi & móng đầu tiên ở Việt Nam của hệ thống salon ORA Taiwan.</p>
-                    <p><i class="fa fa-facebook-square fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-google-plus-square fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-youtube-play fa-lg" aria-hidden="true"></i></p>
-                    <div id="fb-root"></div>
-					<script>(function(d, s, id) {
-                      var js, fjs = d.getElementsByTagName(s)[0];
-                      if (d.getElementById(id)) return;
-                      js = d.createElement(s); js.id = id;
-                      js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.9&appId=883184878397689";
-                      fjs.parentNode.insertBefore(js, fjs);
-                    }(document, 'script', 'facebook-jssdk'));</script>
-                    <div class="fb-page" data-href="https://www.facebook.com/orasalon.vn" data-width="350" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/orasalon.vn/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/orasalon.vn/">ORA Salon</a></blockquote></div>
-                </div> <!-- end box_footer-->
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 box_footer">
-                	<img src="images/logo.png" alt="Công Ty TNHH Thương Mại Lyan" height="60px">
-                    <p>Vẻ đẹp của bạn là niềm tự hào và động lực cho chúng tôi luôn cố gắng!</p>
-                    <p><i class="fa fa-facebook-square fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-google-plus-square fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-youtube-play fa-lg" aria-hidden="true"></i></p>
-                	<div id="fb-root"></div>
-					<script>(function(d, s, id) {
-                      var js, fjs = d.getElementsByTagName(s)[0];
-                      if (d.getElementById(id)) return;
-                      js = d.createElement(s); js.id = id;
-                      js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.9&appId=883184878397689";
-                      fjs.parentNode.insertBefore(js, fjs);
-                    }(document, 'script', 'facebook-jssdk'));</script>
-                    <div class="fb-page" data-href="https://www.facebook.com/hoaly.vn/" data-width="350" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/hoaly.vn/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/hoaly.vn/">HoaLy&#039;s Eyelash Nails</a></blockquote></div>
-                </div> <!-- end box_footer-->
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 box_footer">
-                <h3>Chính sách</h3>
-                    <p><a href="#" target="_self"><i class="fa fa-check-square-o" aria-hidden="true"></i> Bài viết nội dung chính sách 01</a></p>
-                    <p><a href="#" target="_self"><i class="fa fa-check-square-o" aria-hidden="true"></i> Bài viết nội dung chính sách 01</a></p>
-                    <p><a href="#" target="_self"><i class="fa fa-check-square-o" aria-hidden="true"></i> Bài viết nội dung chính sách 01</a></p>
-                    <p><a href="#" target="_self"><i class="fa fa-check-square-o" aria-hidden="true"></i> Bài viết nội dung chính sách 01</a></p>
-              </div> <!-- end box_footer-->
-            </div> <!-- end row-->
-        </div> <!-- end container-->
-    </footer> <!-- end footer-->
-    <div class="copyright">
-    	<div class="container">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-            &copy; Copyright 2017 by Hoa Ly's Eyelash. All Rights Reserved. Designed by <a href="https://www.teamdnt.website" target="_blank">TeamDnT - WedDesign</a>.
-            </div>
-        </div> <!-- end container-->
-    </div> <!-- end copyright-->
+<?php include("footer.php"); ?>
 </body>
 </html>

@@ -29,7 +29,7 @@ if ($nums) {
         $arrTypeMenubar2[$row['ID_type_menubar2']] = $row;
     }
 }
-//echo'<pre>';print_r($_SESSION);die;
+//echo'<pre>';print_r($arrProdCart);die;
 
 //format price
 require_once('includes/my/format-price.php');

@@ -37,7 +37,7 @@ require_once('includes/my/format-price.php');
 $formatPrice = new FormatPrice();
 
 mysql_select_db($database_cnn_hoaly, $cnn_hoaly);
-$query_rs_productindex = "SELECT ID_product, productname, productimg, productprice, ID_danhmuc1, ID_danhmuc2 FROM product WHERE productapproval = 1 ORDER BY productorderlist ASC LIMIT 0,8";
+$query_rs_productindex = "SELECT * FROM product WHERE productapproval = 1 ORDER BY productorderlist ASC LIMIT 0,8";
 $rs_productindex = mysql_query($query_rs_productindex, $cnn_hoaly) or die(mysql_error());
 
 //get ID_product
@@ -67,7 +67,7 @@ $id_account = (int) $user['ID_account'];
             <h4><a href="productdetail.php?cat=<?php echo $row_rs_productindex['ID_danhmuc2']; ?>&amp;id=<?php echo $row_rs_productindex['ID_product']; ?>" target="_self"><?php echo $row_rs_productindex['productname']; ?></a></h4>
 
             <?php if ($id_account): ?>
-                <p><?php echo isset($arrPrice[$row_rs_productindex['ID_product']]) ? $formatPrice->format($arrPrice[$row_rs_productindex['ID_product']]) : $formatPrice->format($row_rs_productindex['productprice']); ?></p>
+                <p><?php echo isset($arrPrice[$row_rs_productindex['ID_product']]) ? $formatPrice->format($arrPrice[$row_rs_productindex['ID_product']]) : ''; ?></p>
             <?php else: ?>
                 <?php if (!$row_rs_productindex['is_hidden_price']): ?>
                     <p><?php echo isset($arrPrice[$row_rs_productindex['ID_product']]) ? $formatPrice->format($arrPrice[$row_rs_productindex['ID_product']]) : $formatPrice->format($row_rs_productindex['productprice']); ?></p>

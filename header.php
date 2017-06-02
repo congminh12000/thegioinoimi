@@ -32,11 +32,11 @@ $cart_nums = (int) $cart['nums'];
                 	<div class="row language_box">
                             <?php
                                 if($user):
-                                    echo '<span class="submenu">Xin chào, ' . ucfirst($user['fullname']) . '</span> | ';
-                                    echo '<span class="submenu"><a href="logout.php">Đăng xuất</a></span> |';
+                                    echo '<span class="submenu">Xin chào, ' . ucfirst($user['fullname']) . '&nbsp;&nbsp;</span> ';
+                                    echo '<span class="submenu"><a href="logout.php">Đăng xuất</a>&nbsp;&nbsp;</span> ';
                                 else:
                                     ?>
-                                    <span class="submenu"><a href="dntgate.php" target="_self">Đăng nhập&nbsp;&nbsp;</a></span> |
+                                    <span class="submenu"><a href="dntgate.php" target="_self">Đăng nhập&nbsp;&nbsp;</a></span>&nbsp;&nbsp;&nbsp;<span class="submenu"><a href="registration.php" target="_self">Đăng ký&nbsp;&nbsp;</a></span>&nbsp;&nbsp;&nbsp;
                             <?php
                                 endif;
                             ?>

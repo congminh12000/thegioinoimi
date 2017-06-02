@@ -41,7 +41,7 @@ if (isset($_GET["cat"])) {
     $KTColParam1_rs_product = $_GET["cat"];
 }
 mysql_select_db($database_cnn_hoaly, $cnn_hoaly);
-$query_rs_product = sprintf("SELECT product.is_hidden_price, product.ID_product, product.productname, product.productname_EN, product.productimg, product.productprice, product.ID_danhmuc2, product.productorderlist, product.productapproval FROM product WHERE product.ID_danhmuc2=%s  AND product.productapproval=1 ORDER BY product.productorderlist ASC ", GetSQLValueString($KTColParam1_rs_product, "int"));
+$query_rs_product = sprintf("SELECT * FROM product WHERE product.ID_danhmuc2=%s  AND product.productapproval=1 ORDER BY product.productorderlist ASC ", GetSQLValueString($KTColParam1_rs_product, "int"));
 $rs_product = mysql_query($query_rs_product, $cnn_hoaly) or die(mysql_error());
 
 //get list product
@@ -70,7 +70,7 @@ if (mysql_num_rows($query)) {
     }
 }
 
-//var_dump($arrTypeMenubar2);
+//var_dump($arrPrice);
 ?>
 <div class="product">
     <?php do { ?>
@@ -79,7 +79,7 @@ if (mysql_num_rows($query)) {
             <h4><a href="productdetail.php?cat=<?php echo $row_rs_product['ID_danhmuc2']; ?>&amp;id=<?php echo $row_rs_product['ID_product']; ?>" target="_self"><?php echo $row_rs_product['productname']; ?></a></h4>
 
             <?php if ($id_account): ?>
-                <p><?php echo isset($arrPrice[$row_rs_product['ID_product']]) ? $formatPrice->format($arrPrice[$row_rs_product['ID_product']]) : $formatPrice->format($row_rs_product['productprice']); ?></p>
+                <p><?php echo isset($arrPrice[$row_rs_product['ID_product']]) ? $formatPrice->format($arrPrice[$row_rs_product['ID_product']]) : ''; ?></p>
             <?php else: ?>
                 <?php if (!$row_rs_product['is_hidden_price']): ?>
                     <p><?php echo isset($arrPrice[$row_rs_product['ID_product']]) ? $formatPrice->format($arrPrice[$row_rs_product['ID_product']]) : $formatPrice->format($row_rs_product['productprice']); ?></p>
