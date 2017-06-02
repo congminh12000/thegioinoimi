@@ -7,7 +7,7 @@
  */
 
 require_once('../Connections/cnn_hoaly.php');
-mysql_select_db($database_cnn_hoaly, $cnn_hoaly);
+//mysql_select_db($database_cnn_hoaly, $cnn_hoaly);
 
 $arrResp = [
     'isError' => true
@@ -15,9 +15,15 @@ $arrResp = [
 
 if ($_GET) {
     $isCheck = $_GET['isCheck'];
-
+    
     $strQuery = 'UPDATE product SET is_hidden_price = ' . $isCheck;
-    $query = mysql_query($strQuery);
+    
+    $mysqli = new mysqli($hostname_cnn_hoaly, $username_cnn_hoaly, $password_cnn_hoaly, $database_cnn_hoaly);
+    $mysqli->autocommit(false);
+    $mysqli->query($strQuery);
+    $mysqli->commit();
+    
+//    $query = mysql_query($strQuery);
 
     $arrResp = [
         'isError' => false
