@@ -109,7 +109,7 @@
                                             <?php endif; ?>
                                         <?php endif; ?>
 
-                                        <a href="javascript:void(0);" target="_self" class="btn btn-info btn-add-cart" data-id='<?php echo $row_rs_productrelative['ID_product']; ?>' data-is-type-menubar2="1" data-type-menubar2="<?php echo $colname_rs_productrelative; ?>">Thêm giỏ hàng</a>&nbsp;&nbsp;&nbsp; <a href="cart.php" class="btn btn-info" role="button">Thanh toán</a>
+                                        <a href="javascript:void(0);" target="_self" class="btn btn-info btn-add-cart" data-id='<?php echo $row_rs_productrelative['ID_product']; ?>' data-is-type-menubar2="1" data-type-menubar2="<?php echo $colname_rs_productrelative; ?>">Thêm giỏ hàng</a>&nbsp;&nbsp;&nbsp; <a href="javascript:void(0);" class="btn btn-info btn-payment-cart" role="button">Thanh toán</a>
                                     </div> <!-- end col -->
                                 <?php }; ?>
                             </div>

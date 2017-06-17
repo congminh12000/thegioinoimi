@@ -99,7 +99,7 @@ $query = mysql_query($strQuery);
     endif;
     ?>
     <i><small style="color:red"><?php echo $row_rs_productdetail['note']; ?></small></i>
-    <a href="javascript:void(0);" class="btn btn-info btn-add-cart" data-id="<?php echo $row_rs_productdetail['ID_product']; ?>" role="button">Thêm giỏ hàng</a>&nbsp;&nbsp;&nbsp; <a href="cart.php" class="btn btn-info" role="button">Thanh toán</a>
+    <a href="javascript:void(0);" class="btn btn-info btn-add-cart" data-id="<?php echo $row_rs_productdetail['ID_product']; ?>" role="button">Thêm giỏ hàng</a>&nbsp;&nbsp;&nbsp; <a href="javascript:void(0);" class="btn btn-info btn-payment-cart" role="button">Thanh toán</a>
 </div> <!-- end col -->
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 boxproductcaption">

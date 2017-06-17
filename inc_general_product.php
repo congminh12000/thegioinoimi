@@ -51,7 +51,7 @@ $formatPrice = new FormatPrice();
                 <?php endif; ?>
 
 
-                <p><a href="cart.php" class="btn btn-info" role="button">Thanh toán</a>&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" target="_self" class="btn btn-info btn-add-cart" data-id='<?php echo $row['ID_product']; ?>' data-is-type-menubar2="1" data-type-menubar2="<?php echo $KTColParam1_rs_product; ?>">Thêm giỏ hàng</a></p>
+                <p><a href="javascript:void(0);" class="btn btn-info btn-payment-cart" role="button">Thanh toán</a>&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" target="_self" class="btn btn-info btn-add-cart" data-id='<?php echo $row['ID_product']; ?>' data-is-type-menubar2="1" data-type-menubar2="<?php echo $KTColParam1_rs_product; ?>">Thêm giỏ hàng</a></p>
             </div> <!-- end col product box-->
             <?php
             $stt++;

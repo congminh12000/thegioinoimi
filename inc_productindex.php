@@ -74,7 +74,7 @@ $id_account = (int) $user['ID_account'];
                 <?php endif; ?>
             <?php endif; ?>
 
-            <p><a href="cart.php" class="btn btn-info" role="button">Thanh toán</a>&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" target="_self" class="btn btn-info btn-add-cart" data-id='<?php echo $row_rs_productindex['ID_product']; ?>' data-is-type-menubar2="1" data-type-menubar2="<?php echo $row_rs_productindex['ID_danhmuc2']; ?>">Thêm giỏ hàng</a></p>
+            <p><a href="javascript:void(0);" class="btn btn-info btn-payment-cart" role="button">Thanh toán</a>&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" target="_self" class="btn btn-info btn-add-cart" data-id='<?php echo $row_rs_productindex['ID_product']; ?>' data-is-type-menubar2="1" data-type-menubar2="<?php echo $row_rs_productindex['ID_danhmuc2']; ?>">Thêm giỏ hàng</a></p>
         </span>
     </li>
 <?php } while ($row_rs_productindex = mysql_fetch_assoc($rs_productindex)); ?>
