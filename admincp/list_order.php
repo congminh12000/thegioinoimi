@@ -2,17 +2,26 @@
 require_once('../Connections/cnn_hoaly.php');
 mysql_select_db($database_cnn_hoaly, $cnn_hoaly);
 
+//class order
+require_once('../includes/my/order.php');
+$classOrder = new Order();
+
 $strQuery = "SELECT * FROM orders as o LEFT JOIN account as a ON o.buyer_id = a.ID_account"
         . " WHERE o.deleted = 0";
 
 if ($_GET && $_GET['isSearch']) {
     $fullname = trim($_GET['fullname']);
     $email = trim($_GET['email']);
+    $status = trim($_GET['status']);
     $from = trim($_GET['from']);
     $to = trim($_GET['to']);
 
     if ($fullname) {
         $strQuery .= ' AND a.fullname LIKE "%' . $fullname . '%"';
+    }
+
+    if ($status) {
+        $strQuery .= ' AND o.status = "' . $status . '"';
     }
 
     if ($email) {
@@ -24,17 +33,16 @@ if ($_GET && $_GET['isSearch']) {
     }
 }
 
-$strQuery .= ' ORDER BY ID_order DESC';
+$arrOrderStatus = $classOrder->listStatus();
+$keyOrderStatus = array_keys($arrOrderStatus);
 
-//class order
-require_once('../includes/my/order.php');
-$classOrder = new Order();
+$strQuery .= " ORDER BY FIELD(status, '" . implode("','", $keyOrderStatus) . "') ASC, ID_order DESC";
 
 //class paginator
 require_once('../includes/my/paginator.php');
 $classPaginator = new Paginator($strQuery);
 
-$limit = ( isset($_GET['limit']) ) ? $_GET['limit'] : 5;
+$limit = ( isset($_GET['limit']) ) ? $_GET['limit'] : 20;
 $page = ( isset($_GET['page']) ) ? $_GET['page'] : 1;
 $links = ( isset($_GET['links']) ) ? $_GET['links'] : 1;
 
@@ -109,6 +117,17 @@ $formatPrice = new FormatPrice();
                                                 </td>
                                             </tr>
                                             <tr>
+                                                <td>Trạng thái</td>
+                                                <td>
+                                                    <select class="form-control" name="status">
+                                                        <option value="">== Tất cả ==</option>
+                                                        <?php foreach ($arrOrderStatus as $key => $name): ?>
+                                                            <option value="<?php echo $key; ?>" <?php echo $_GET['status'] == $key ? 'selected="selected"' : ''; ?>><?php echo $name; ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td>Ngày tạo</td>
                                                 <td>
                                                     <div class="col-md-4">
@@ -157,17 +176,25 @@ $formatPrice = new FormatPrice();
                                                     <td><?php echo $row['email']; ?></td>
                                                     <td><?php echo $row['address']; ?></td>
                                                     <td><?php echo $row['created_date']; ?></td>
-                                                    <td><span class="label label-success"><?php echo $classOrder->getStatus($row['status']); ?></span></td>
+                                                    <td>
+                                                        <?php echo $classOrder->labelColorStatus($row['status']); ?>
+                                                    </td>
                                                     <td><?php echo $row['total_qty']; ?></td>
                                                     <td><?php echo $formatPrice->format($row['grand_total']); ?></td>
                                                     <td class="text-center">
-                                                        <a href="javascript:void(0);" class="btn-detail" data-id="<?php echo $row['ID_order']; ?>">
+                                                        <a href="javascript:void(0);" class="btn-detail"
+                                                           title="Chi tiết đơn hàng"
+                                                           data-id="<?php echo $row['ID_order']; ?>">
                                                             <i class="fa fa-plus" aria-hidden="true" style="color: #f9a020"></i>
                                                         </a>
-                                                        <a href="javascript:void(0);" class="btn-detail" data-id="<?php echo $row['ID_order']; ?>">
-                                                            <i class="fa fa-newspaper-o" aria-hidden="true"></i>
-                                                        </a>
-                                                        <a href="javascript:void(0);" class="btn-detail-receiver"
+                                                        <?php if ($row['status'] != 'complete'): ?>
+                                                            <a href="javascript:void(0);" class="btn-update-order-status" 
+                                                               title="Cập nhật trạng thái đơn hàng"
+                                                               data-id="<?php echo $row['ID_order']; ?>">
+                                                                <i class="fa fa-newspaper-o" aria-hidden="true"></i> 
+                                                            </a>
+                                                        <?php endif; ?>
+                                                        <a href="javascript:void(0);" class="btn-detail-receiver" title="Xem thông tin người nhận"
                                                            data-receiver-name="<?php echo $row['receiver_name']; ?>"
                                                            data-receiver-phone="<?php echo $row['receiver_phone']; ?>"
                                                            data-receiver-email="<?php echo $row['receiver_email']; ?>"
@@ -222,6 +249,86 @@ $formatPrice = new FormatPrice();
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd',
         });
+
+        $('.btn-update-order-status').click(function () {
+            var that = $(this);
+            var orderId = that.data('id');
+
+            if (orderId == '') {
+                swal('Lỗi !', 'Lỗi !', 'error');
+                return false;
+            }
+
+            $.ajax({
+                url: "get_list_update_order_status.php",
+                type: "GET",
+                dataType: 'JSON',
+                data: {
+                    orderId: orderId
+                },
+                success: function (result) {
+
+                    if (!result.isError) {
+                        var arrOrderStatus = result.data.arrOrderStatus;
+                        var order = result.data.order;
+                        var inputOption = {};
+
+                        $.each(arrOrderStatus, function (k, v) {
+                            
+                            inputOption[k] = v;
+                        })
+
+                        updateOrderStatus(inputOption, order.ID_order);
+                    } else {
+                        swal('Lỗi !', result.message, 'error');
+                    }
+                }
+            });
+
+
+        });
+
+        function updateOrderStatus(objInputOption, orderId) {
+
+            swal({
+                title: 'Cập nhật trạng thái đơn hàng',
+                input: 'select',
+                inputOptions: objInputOption,
+                inputPlaceholder: '== Vui lòng chọn trạng thái ==',
+                allowOutsideClick: false,
+                showCancelButton: true,
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy bỏ',
+                showLoaderOnConfirm: true,
+                inputValidator: function (value) {
+                    return new Promise(function (resolve, reject) {
+
+                        if (value == '') {
+                            reject('Vui lòng chọn trạng thái cần cập nhật !');
+                            return false;
+                        }
+
+                        $.ajax({
+                            url: 'update_order_status.php',
+                            type: "POST",
+                            data: {
+                                status: value,
+                                orderId: orderId
+                            },
+                            dataType: 'JSON',
+                            success: function (result) {
+
+                                if (!result.isError) {
+                                    window.location.href = window.location;
+                                } else {
+                                    swal('Lỗi', result.message, 'error');
+                                }
+                            }
+                        });
+                    })
+                }
+            })
+        }
 
         $('.btn-detail-receiver').click(function () {
             var that = $(this);

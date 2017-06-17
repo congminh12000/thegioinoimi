@@ -17,22 +17,4 @@ class General {
 
         return $arrList;
     }
-
-    public static function listOrderStatus() {
-        $arrStatus = [
-            'pending' => 'Chờ xử lý',
-            'confirm' => 'Xác nhận',
-            'shipping' => 'Giao hàng',
-            'complete' => 'Hoàn tất'
-        ];
-
-        return $arrStatus;
-    }
-
-    public static function getOrderStatus($status) {
-        $arrStatus = self::listOrderStatus();
-
-        return $arrStatus[$status];
-    }
-
 }

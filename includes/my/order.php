@@ -12,10 +12,19 @@ class Order {
         return $this;
     }
 
-    public function listStatus() {
+    public function listStatus($positionStatus = '') {
         $arrStatus = [
-            'pending' => 'Chờ xử lý'
+            'pending' => 'Chờ xử lý',
+            'confirm' => 'Xác nhận',
+            'shipping' => 'Giao hàng',
+            'complete' => 'Hoàn tất'
         ];
+
+        if ($positionStatus) {
+            
+            $number = array_search($positionStatus, array_keys($arrStatus)) + 1;
+            $arrStatus = array_slice($arrStatus, $number);
+        }
 
         return $arrStatus;
     }
@@ -24,6 +33,36 @@ class Order {
         $arrStatus = $this->listStatus();
 
         return isset($arrStatus[$status]) ? $arrStatus[$status] : '';
+    }
+
+    public function labelColorStatus($status) {
+
+        if (empty($status)) {
+            return '';
+        }
+
+        $_status = $this->getStatus($status);
+
+        switch ($status) {
+            case 'pending':
+
+                $label = '<span class="label label-warning">' . $_status . '</span>';
+                break;
+            case 'confirm':
+
+                $label = '<span class="label label-primary">' . $_status . '</span>';
+                break;
+            case 'shipping':
+
+                $label = '<span class="label label-info">' . $_status . '</span>';
+                break;
+            case 'complete':
+
+                $label = '<span class="label label-success">' . $_status . '</span>';
+                break;
+        }
+
+        return $label;
     }
 
 }
