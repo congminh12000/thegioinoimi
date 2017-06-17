@@ -1,54 +1,9 @@
 <?php require_once('Connections/cnn_hoaly.php'); ?>
 <?php
-if (!function_exists("GetSQLValueString")) {
-
-    function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") {
-        if (PHP_VERSION < 6) {
-            $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
-        }
-
-        $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
-
-        switch ($theType) {
-            case "text":
-                $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-                break;
-            case "long":
-            case "int":
-                $theValue = ($theValue != "") ? intval($theValue) : "NULL";
-                break;
-            case "double":
-                $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
-                break;
-            case "date":
-                $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-                break;
-            case "defined":
-                $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
-                break;
-        }
-        return $theValue;
-    }
-
-}
-
-//format price
-require_once('includes/my/format-price.php');
-$formatPrice = new FormatPrice();
-
-
 mysql_select_db($database_cnn_hoaly, $cnn_hoaly);
-$query_rs_product = "SELECT * FROM product WHERE product.productapproval=1";
 
-$KTColParam1_rs_product = "2";
-if (isset($_GET["cat"])) {
-    $KTColParam1_rs_product = (int) $_GET["cat"];
-}
+$query_rs_product = "SELECT * FROM product WHERE product.productapproval = 1 ORDER BY product.productorderlist ASC";
 
-$query_rs_product .= " AND product.ID_danhmuc2 = {$KTColParam1_rs_product} ORDER BY product.productorderlist ASC";
-
-//get list product
-//$rs_product = mysql_query($query_rs_product, $cnn_hoaly) or die(mysql_error());
 //class paginator
 require_once('includes/my/paginator.php');
 //echo $query_rs_product;die;
@@ -60,28 +15,21 @@ $links = ( isset($_GET['links']) ) ? $_GET['links'] : 1;
 
 $results = $classPaginator->getData($limit, $page);
 
+$arrProdId = array_column($results->data, 'ID_product');
+
 //price 
 require_once ('includes/my/price.php');
 $classPrice = new Price();
-$arrPrice = $classPrice->priceCatToAccessLevel($KTColParam1_rs_product);
-//$classPrice->p($arrPrice);
+$arrPrice = $classPrice->priceMultiAccessLevel($arrProdId);
+
 //session
 session_start();
 $user = $_SESSION['user'];
 $id_account = (int) $user['ID_account'];
 
-//get type_menubar2
-$strQuery = "SELECT * FROM type_menubar2 WHERE tm2_status = 1 AND tm2_deleted = 0 AND ID_menubar2 = {$KTColParam1_rs_product}";
-$query = mysql_query($strQuery);
-$arrTypeMenubar2 = [];
-
-if (mysql_num_rows($query)) {
-    while ($row = mysql_fetch_assoc($query)) {
-        $arrTypeMenubar2[] = $row;
-    }
-}
-
-//var_dump($arrPrice);
+//format price
+require_once('includes/my/format-price.php');
+$formatPrice = new FormatPrice();
 ?>
 <div class="product">
     <?php

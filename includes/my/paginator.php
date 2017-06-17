@@ -31,6 +31,7 @@ class Paginator {
         } else {
             $query = $this->_query . " LIMIT " . ( ( $this->_page - 1 ) * $this->_limit ) . ", $this->_limit";
         }
+//        echo $query;die;
         $rs = mysql_query($query);
 
         while ($row = mysql_fetch_assoc($rs)) {
@@ -51,11 +52,22 @@ class Paginator {
             return '';
         }
 
-        $isSearch = $_GET['isSearch'];
-        $url = '?';
+        list($a, $location, $c) = explode('/', $_SERVER['SCRIPT_NAME']);
 
-        if ($isSearch) {
+        if ($location == 'admincp') {
+
+            $isSearch = $_GET['isSearch'];
+            $url = '?';
+
+            if ($isSearch) {
+                $url = $_SERVER['REQUEST_URI'] . '&';
+            }
+        } else if ($location == 'product.php' && isset($_GET['cat'])) {
+
             $url = $_SERVER['REQUEST_URI'] . '&';
+        } else {
+            
+            $url = '?';
         }
 
         $last = ceil($this->_total / $this->_limit);

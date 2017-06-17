@@ -136,6 +136,8 @@ $ins_product->addColumn("productdetail_EN", "STRING_TYPE", "POST", "productdetai
 $ins_product->addColumn("productapproval", "CHECKBOX_1_0_TYPE", "POST", "productapproval", "0");
 $ins_product->addColumn("ID_account", "NUMERIC_TYPE", "POST", "ID_account", "{SESSION.kt_login_id}");
 $ins_product->addColumn("is_hidden_price", "NUMERIC_TYPE", "POST", "is_hidden_price");
+$ins_product->addColumn("note", "STRING_TYPE", "POST", "note");
+$ins_product->addColumn("note_EN", "STRING_TYPE", "POST", "note_EN");
 $ins_product->setPrimaryKey("ID_product", "NUMERIC_TYPE");
 
 // Make an update transaction instance
@@ -164,6 +166,8 @@ $upd_product->addColumn("productdetail_EN", "STRING_TYPE", "POST", "productdetai
 $upd_product->addColumn("productapproval", "CHECKBOX_1_0_TYPE", "POST", "productapproval");
 $upd_product->addColumn("ID_account", "NUMERIC_TYPE", "POST", "ID_account");
 $upd_product->addColumn("is_hidden_price", "NUMERIC_TYPE", "POST", "is_hidden_price");
+$upd_product->addColumn("note", "STRING_TYPE", "POST", "note");
+$upd_product->addColumn("note_EN", "STRING_TYPE", "POST", "note_EN");
 $upd_product->setPrimaryKey("ID_product", "NUMERIC_TYPE", "GET", "ID_product");
 
 // Make an instance of the transaction object
@@ -478,6 +482,22 @@ if ($productId) {
                                                         CKEDITOR.replace('productdetail_EN_<?php echo $cnt1; ?>', {extraPlugins: 'imageuploader'});
                                                     </script>
                                                     <?php echo $tNGs->displayFieldHint("productdetail_EN"); ?> <?php echo $tNGs->displayFieldError("product", "productdetail_EN", $cnt1); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="KT_th"><label for="note_<?php echo $cnt1; ?>">Ghi chú:</label></td>
+                                                <td colspan="2"><textarea name="note_<?php echo $cnt1; ?>" id="note_<?php echo $cnt1; ?>" cols="50" rows="5"><?php echo KT_escapeAttribute($row_rsproduct['note']); ?></textarea>
+                                                    <script type="text/javascript">
+                                                        CKEDITOR.replace('note_<?php echo $cnt1; ?>', {extraPlugins: 'imageuploader'});
+                                                    </script>
+                                                    <?php echo $tNGs->displayFieldHint("note"); ?> <?php echo $tNGs->displayFieldError("product", "note", $cnt1); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="KT_th"><label for="note_EN_<?php echo $cnt1; ?>">Ghi chú (tiếng Anh):</label></td>
+                                                <td colspan="2"><textarea name="note_EN_<?php echo $cnt1; ?>" id="note_EN_<?php echo $cnt1; ?>" cols="50" rows="5"><?php echo KT_escapeAttribute($row_rsproduct['note_EN']); ?></textarea>
+                                                    <script type="text/javascript">
+                                                        CKEDITOR.replace('note_EN_<?php echo $cnt1; ?>', {extraPlugins: 'imageuploader'});
+                                                    </script>
+                                                    <?php echo $tNGs->displayFieldHint("note_EN"); ?> <?php echo $tNGs->displayFieldError("product", "note_EN", $cnt1); ?></td>
                                             </tr>
                                             <tr>
                                                 <td class="KT_th"><label for="productapproval_<?php echo $cnt1; ?>">Duyệt:</label></td>

@@ -164,6 +164,9 @@ $formatPrice = new FormatPrice();
                                                         <a href="javascript:void(0);" class="btn-detail" data-id="<?php echo $row['ID_order']; ?>">
                                                             <i class="fa fa-plus" aria-hidden="true" style="color: #f9a020"></i>
                                                         </a>
+                                                        <a href="javascript:void(0);" class="btn-detail" data-id="<?php echo $row['ID_order']; ?>">
+                                                            <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                                                        </a>
                                                         <a href="javascript:void(0);" class="btn-detail-receiver"
                                                            data-receiver-name="<?php echo $row['receiver_name']; ?>"
                                                            data-receiver-phone="<?php echo $row['receiver_phone']; ?>"
@@ -227,28 +230,28 @@ $formatPrice = new FormatPrice();
             var receiverPhone = that.data('receiver-phone');
             var receiverAddress = that.data('receiver-address');
             var receiverNote = that.data('receiver-note');
-            
+
             var html = '<table class="table table-striped table-hover" width="100%">';
             html += '<tr>\n\
                 <td width="30%">\n\
                  Tên người nhận    \n\
                     </td>\n\
 <td>\n\
-                 '+ receiverName +'    \n\
+                 ' + receiverName + '    \n\
                     </td></tr>\n\
 <tr><td>\n\
                  Email người nhận    \n\
                     </td>\n\
-<td> '+receiverEmail+'</td></tr>\n\
+<td> ' + receiverEmail + '</td></tr>\n\
 <tr><td>Sđt</td>\n\
-<td>'+receiverPhone+'</td></tr>\n\
+<td>' + receiverPhone + '</td></tr>\n\
 <tr><td>Địa chỉ</td>\n\
-<td>'+receiverAddress+'</td></tr>\n\
+<td>' + receiverAddress + '</td></tr>\n\
 <tr><td>Ghi chú</td>\n\
-<td>'+receiverNote+'</td></tr>\n\
+<td>' + receiverNote + '</td></tr>\n\
 ';
             html += '<table>';
-        
+
             swal({
                 title: '<span style="color: #ab47bc">Thông tin người nhận</span>',
                 html: html,

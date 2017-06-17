@@ -30,7 +30,6 @@ if ($nums) {
     }
 }
 //echo'<pre>';print_r($arrProdCart);die;
-
 //format price
 require_once('includes/my/format-price.php');
 $formatPrice = new FormatPrice();
@@ -118,7 +117,7 @@ $formatPrice = new FormatPrice();
                                         <?php echo $row['productname']; ?>
                                     </div>
                                     <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 text-center">
-                                        <?php echo $arrTypeMenubar2[$row['ID_type_menubar2']]['tm2_name'] ; ?>
+                                        <?php echo $arrTypeMenubar2[$row['ID_type_menubar2']]['tm2_name']; ?>
                                     </div>
                                     <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 text-center">
                                         <input type="number" class="so-luong-sp" min='1' value="<?php echo $sl; ?>" />
@@ -142,20 +141,32 @@ $formatPrice = new FormatPrice();
                                     <h4><b class="sum-total" data-price="<?php echo $priceTotal; ?>"><?php echo $formatPrice->format($priceTotal); ?></b></h4>
                                 </div>
                             </div> <!-- end row cart-total-price-->
-                            <div class="row receiveinfo">
-                                <h3>Thông tin người nhận</h3>
-                                <span class="line3"></span>
-                                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-                                    <form method="POST" action="cart_thanks.php">
-                                        <input type="text" name="fullname" placeholder="Họ tên"><br>
-                                        <input type="text" name="phone" placeholder="Điện thoại"><br>                  
-                                        <input type="text" name="email" placeholder="Email" width="350px"><br>
-                                        <input type="text" name="address" placeholder="Địa chỉ nhận hàng"><br> 
+                            <form method="POST" action="cart_thanks.php">
+                                <div class="row receiveinfo">
+                                    <h3>Thông tin người nhận</h3>
+                                    <span class="line3"></span>
+                                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+
+                                        <input type="text" name="fullname" placeholder="Họ tên" value="<?php echo $user['fullname']; ?>"><br>
+                                        <input type="text" name="phone" placeholder="Điện thoại" value="<?php echo $user['phone']; ?>"><br>                  
+                                        <input type="text" name="email" placeholder="Email" value="<?php echo $user['email']; ?>" width="350px"><br>
+                                        <input type="text" name="address" placeholder="Địa chỉ nhận hàng" value="<?php echo $user['address']; ?>"><br> 
                                         <textarea rows="4" cols="50" name="note" placeholder="Ghi chú"></textarea><br>
-                                        <button type="submit" class="btn btn-info">Thanh toán</button>
-                                    </form>
-                                </div>
-                            </div> <!-- end row receive-info-->
+
+                                    </div>
+                                </div> <!-- end row receive-info-->
+
+                                <div class="row receiveinfo">
+                                    <h3>Thanh toán</h3>
+                                    <span class="line3"></span>
+                                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                                        <input type="radio" name="payment" value="cash" checked=""> Bằng tiền mặt khi nhận hàng (COD)
+                                        <input type="radio" name="payment" value="bank"> Chuyển khoản
+                                    </div>
+                                </div> <!-- end row receive-info-->
+
+                                <button type="submit" class="btn btn-info">Thanh toán</button>
+                            </form>
                         <?php else: ?>
                             <p class="text-center">Không có sản phẩm nào trong giỏ</p>
                         <?php endif; ?>

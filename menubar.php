@@ -23,16 +23,17 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">SẢN PHẨM <b class="caret"></b></a>
+                    <a href="#" id="menu_general_product" class="dropdown-toggle" data-toggle="dropdown">SẢN PHẨM <b class="caret"></b></a>
                     <ul class="dropdown-menu">
+                        <li><a href="product.php">Tất cả sản phẩm</a></li>
                         <?php include("inc_menubarproduct.php"); ?>
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">ĐÀO TẠO <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Khóa học</a></li>
-                        <li><a href="#">Lịch học</a></li>
+                        <li><a href="page_kh.php">Khóa học</a></li>
+                        <li><a href="page_lh.php">Lịch học</a></li>
                         <li><a href="#">Tài liệu</a></li>
                     </ul>
                 </li>
@@ -45,3 +46,12 @@
         </div><!-- /.navbar-collapse -->
     </div>
 </nav>
+
+<script>
+//    $(document).ready(function () {
+//        $('#menu_general_product').click(function () {
+//            
+//            window.location = 'product.php';
+//        });
+//    });
+</script>

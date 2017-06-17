@@ -43,6 +43,11 @@
             $email = trim($_POST['email']);
             $address = trim($_POST['address']);
             $note = $_POST['note'];
+            $payment = trim($_POST['payment']);
+
+            if ($payment == '') {
+                header('Location: cart.php');
+            }
 
             $cart = $_SESSION['cart'][$id_account];
 
@@ -66,6 +71,13 @@
                 mysql_query($strQuery);
 
                 $orderId = mysql_insert_id();
+
+                //insert payment
+                $strKeys = 'order_id, type';
+                $strValuesOrder = "'{$orderId}', '{$payment}'";
+
+                $strQuery = "INSERT INTO order_payment({$strKeys}) VALUES({$strValuesOrder})";
+                mysql_query($strQuery);
 
                 //insert order_item
                 $strKeys = 'ID_order, qty_ordered, ID_product, grand_total, price_access_level, ID_type_menubar2';
