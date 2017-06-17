@@ -22,7 +22,7 @@ if ($_GET) {
         die;
     }
 
-    $strQuery = "SELECT * FROM district WHERE status = 1 AND city_id = {$cityId}";
+    $strQuery = "SELECT * FROM quanhuyen WHERE quanhuyenvisible = 1 AND ID_tinhthanh = {$cityId}";
     
     $query = mysql_query($strQuery);
 

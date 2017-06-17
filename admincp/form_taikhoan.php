@@ -148,7 +148,7 @@ $strQueryAccessLevel = 'SELECT * FROM accesslevel WHERE deleted = 0 AND status =
 $queryAccessLevel = mysql_query($strQueryAccessLevel);
 
 //get list city
-$strQueryCity = 'SELECT * FROM city WHERE status = 1';
+$strQueryCity = 'SELECT * FROM tinhthanh WHERE tinhthanhvisible = 1';
 $queryCity = mysql_query($strQueryCity);
 ?>
 <!doctype html>
@@ -312,7 +312,7 @@ $queryCity = mysql_query($strQueryCity);
                                                     <select name="city_id_<?php echo $cnt1; ?>" class="city" id="city_id_<?php echo $cnt1; ?>">
                                                         <option value="">== Vui lòng chọn thành phố ==</option>
                                                         <?php while ($row = mysql_fetch_assoc($queryCity)): ?>
-                                                            <option value="<?php echo $row['ID_city']; ?>" <?php echo $row['ID_city'] == KT_escapeAttribute($row_rsaccount['city_id']) ? 'selected="selected"' : ''; ?>><?php echo $row['name']; ?></option>
+                                                            <option value="<?php echo $row['ID_tinhthanh']; ?>" <?php echo $row['ID_tinhthanh'] == KT_escapeAttribute($row_rsaccount['city_id']) ? 'selected="selected"' : ''; ?>><?php echo $row['tentinhthanh']; ?></option>
                                                         <?php endwhile; ?>
                                                     </select>
                                                     <?php echo $tNGs->displayFieldError("account", "city_id", $cnt1); ?></td>
@@ -419,11 +419,11 @@ $queryCity = mysql_query($strQueryCity);
 
                             var selected = '';
 
-                            if (districtId == v.ID_district) {
+                            if (districtId == v.ID_quanhuyen) {
                                 selected = 'selected="selected"';
                             }
 
-                            xHtml += '<option value="' + v.ID_district + '" ' + selected + '>' + v.name + '</option>';
+                            xHtml += '<option value="' + v.ID_quanhuyen + '" ' + selected + '>' + v.tenquanhuyen + '</option>';
                         })
 
                     } else {

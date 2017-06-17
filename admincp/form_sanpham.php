@@ -423,7 +423,7 @@ if ($productId) {
 
                                                     <!--                                                    <label>
                                                                                                             Ẩn / hiện
-                                                                                                            <input type="checkbox" name="is_hidden_price_<?php // echo $cnt1;                  ?>" value="1" <?php // echo KT_escapeAttribute($row_rsproduct['is_hidden_price']) == 1 ? 'checked="checked"' : '';                  ?> />
+                                                                                                            <input type="checkbox" name="is_hidden_price_<?php // echo $cnt1;                    ?>" value="1" <?php // echo KT_escapeAttribute($row_rsproduct['is_hidden_price']) == 1 ? 'checked="checked"' : '';                    ?> />
                                                                                                         </label>-->
                                                 </td>
                                                 <td>
@@ -440,6 +440,11 @@ if ($productId) {
                                                         <?php
                                                         if (mysql_num_rows($queryAccessLevel)):
                                                             while ($row = mysql_fetch_assoc($queryAccessLevel)):
+
+                                                                if ($row['ID_accesslevel'] == 1) {
+                                                                    continue;
+                                                                }
+                                                                
                                                                 ?>
                                                                 Giá <?php echo $row['name']; ?><input type="text" name="productprice_accesslevel_<?php echo $cnt1; ?>[<?php echo $row['ID_accesslevel']; ?>]" id="" value="<?php echo KT_escapeAttribute($arrPrice[$row['ID_accesslevel']]['price']); ?>" size="7" /> <br>
                                                                 <?php
@@ -471,7 +476,7 @@ if ($productId) {
                                                 <td class="KT_th"><label for="productdetail_<?php echo $cnt1; ?>">Chi tiết sản phẩm:</label></td>
                                                 <td colspan="2"><textarea name="productdetail_<?php echo $cnt1; ?>" id="productdetail_<?php echo $cnt1; ?>" cols="50" rows="5"><?php echo KT_escapeAttribute($row_rsproduct['productdetail']); ?></textarea>
                                                     <script type="text/javascript">
-            CKEDITOR.replace('productdetail_<?php echo $cnt1; ?>', {extraPlugins: 'imageuploader'});
+                CKEDITOR.replace('productdetail_<?php echo $cnt1; ?>', {extraPlugins: 'imageuploader'});
                                                     </script>
                                                     <?php echo $tNGs->displayFieldHint("productdetail"); ?> <?php echo $tNGs->displayFieldError("product", "productdetail", $cnt1); ?></td>
                                             </tr>

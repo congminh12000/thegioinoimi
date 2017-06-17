@@ -117,8 +117,14 @@ if ($_POST) {
     }
 }
 
+//get user
+$strQuery = "SELECT * FROM account WHERE ID_account = {$id_account}";
+$query = mysql_query($strQuery);
+
+$userDetail = mysql_fetch_assoc($query);
+
 //get city
-$strQuery = "SELECT * FROM city WHERE status = 1";
+$strQuery = "SELECT * FROM tinhthanh WHERE tinhthanhvisible = 1";
 $query = mysql_query($strQuery);
 
 while ($row = mysql_fetch_assoc($query)) {
@@ -126,12 +132,14 @@ while ($row = mysql_fetch_assoc($query)) {
 }
 
 //get district
-$strQuery = "SELECT * FROM district WHERE city_id = {$user['city_id']} AND status = 1";
+$strQuery = "SELECT * FROM quanhuyen WHERE ID_tinhthanh = {$userDetail['city_id']} AND quanhuyenvisible = 1";
 $query = mysql_query($strQuery);
 
 while ($row = mysql_fetch_assoc($query)) {
     $arrDistrict[] = $row;
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -195,22 +203,22 @@ while ($row = mysql_fetch_assoc($query)) {
                                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
 
                                     <label>Tài khoản đăng nhập</label>
-                                    <input type="text" name="username" placeholder="Tài khoản đăng nhập" value="<?php echo isset($_POST['username']) ? $_POST['username'] : $user['username']; ?>"><br>
+                                    <input type="text" name="username" placeholder="Tài khoản đăng nhập" value="<?php echo isset($_POST['username']) ? $_POST['username'] : $userDetail['username']; ?>"><br>
 
                                     <label>Họ và tên</label>
-                                    <input type="text" name="fullname" placeholder="Họ tên" value="<?php echo isset($_POST['fullname']) ? $_POST['fullname'] : $user['fullname']; ?>"><br>
+                                    <input type="text" name="fullname" placeholder="Họ tên" value="<?php echo isset($_POST['fullname']) ? $_POST['fullname'] : $userDetail['fullname']; ?>"><br>
 
                                     <label>Email</label>
-                                    <input type="text" name="email" placeholder="Email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : $user['email']; ?>" width="350px"><br>
+                                    <input type="text" name="email" placeholder="Email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : $userDetail['email']; ?>" width="350px"><br>
 
                                     <label>Địa chỉ</label>
-                                    <input type="text" name="address" placeholder="Địa chỉ" value="<?php echo isset($_POST['address']) ? $_POST['address'] : $user['address']; ?>"><br> 
+                                    <input type="text" name="address" placeholder="Địa chỉ" value="<?php echo isset($_POST['address']) ? $_POST['address'] : $userDetail['address']; ?>"><br> 
 
                                     <label>Sđt : </label>
-                                    <input type="text" name="phone" placeholder="Điện thoại" value="<?php echo isset($_POST['phone']) ? $_POST['phone'] : $user['phone']; ?>"><br>
+                                    <input type="text" name="phone" placeholder="Điện thoại" value="<?php echo isset($_POST['phone']) ? $_POST['phone'] : $userDetail['phone']; ?>"><br>
 
                                     <label>Cmnd : </label>
-                                    <input type="text" name="cmnd" placeholder="Cmnd" value="<?php echo isset($_POST['cmnd']) ? $_POST['cmnd'] : $user['cmnd']; ?>"><br>
+                                    <input type="text" name="cmnd" placeholder="Cmnd" value="<?php echo isset($_POST['cmnd']) ? $_POST['cmnd'] : $userDetail['cmnd']; ?>"><br>
 
                                     <label>Mật khẩu cũ : </label>
                                     <input type="password" name="old-password" placeholder="Mật khẩu cũ" value=""><br>
@@ -225,8 +233,8 @@ while ($row = mysql_fetch_assoc($query)) {
                                     <select name="city" class="city">
                                         <option value="">== Vui lòng chọn thành phố ==</option>
                                         <?php foreach ($arrCity as $city): ?>
-                                            <option value="<?php echo $city['ID_city']; ?>" <?php echo $user['city_id'] == $city['ID_city'] ? 'selected="selected"' : ''; ?>>
-                                                <?php echo $city['name']; ?>
+                                            <option value="<?php echo $city['ID_tinhthanh']; ?>" <?php echo $userDetail['city_id'] == $city['ID_tinhthanh'] ? 'selected="selected"' : ''; ?>>
+                                                <?php echo $city['tentinhthanh']; ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -237,7 +245,7 @@ while ($row = mysql_fetch_assoc($query)) {
                                     <select name="district" class="district">
                                         <option value="">== Vui lòng chọn quận ==</option>
                                         <?php foreach ($arrDistrict as $district): ?>
-                                            <option value="<?php echo $district['ID_district']; ?>"><?php echo $district['name']; ?></option>
+                                            <option value="<?php echo $district['ID_quanhuyen']; ?>"><?php echo $district['tenquanhuyen']; ?></option>
                                         <?php endforeach; ?>
                                     </select>
 
@@ -261,7 +269,7 @@ while ($row = mysql_fetch_assoc($query)) {
 
 <script>
     $(document).ready(function () {
-        var districtId = <?php echo (int) $user['district_id']; ?>;
+        var districtId = <?php echo (int) $userDetail['district_id']; ?>;
 
         $('select.city').change(function () {
             var cityId = $(this).val();
@@ -284,11 +292,11 @@ while ($row = mysql_fetch_assoc($query)) {
 
                             var selected = '';
 
-                            if (districtId == v.ID_district) {
+                            if (districtId == v.ID_quanhuyen) {
                                 selected = 'selected="selected"';
                             }
 
-                            xHtml += '<option value="' + v.ID_district + '" ' + selected + '>' + v.name + '</option>';
+                            xHtml += '<option value="' + v.ID_quanhuyen + '" ' + selected + '>' + v.tenquanhuyen + '</option>';
                         })
 
                     } else {
@@ -300,5 +308,6 @@ while ($row = mysql_fetch_assoc($query)) {
             });
         });
 
+        $('select.city').trigger('change');
     });
 </script>
