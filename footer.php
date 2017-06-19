@@ -175,34 +175,6 @@
                                             }
                                         })
                                     });
-
-                                    $('.btn-payment-cart').click(function () {
-
-                                        $.ajax({
-                                            url: 'check_payment_cart.php',
-                                            type: 'GET',
-                                            dataType: 'JSON',
-                                            data: {
-                                                isCheck: true
-                                            },
-                                            success: function (result) {
-
-                                                if (!result.isError) {
-                                                    var isPayment = result.data.isPayment;
-
-                                                    if (isPayment) {
-                                                        window.location = 'cart.php';
-                                                    } else {
-                                                        $('.btn-add-cart').trigger('click');
-                                                    }
-
-                                                } else {
-                                                    //                    alert(result.message);
-                                                }
-                                            }
-                                        })
-                                    });
-
                                     function loadTypeMenubar2(that, productId, typeMenubar2Id) {
 
                                         $.ajax({
@@ -286,6 +258,64 @@
                                                 }
                                             }
                                         })
+                                    }
+
+
+
+                                });
+                                
+//                                var bottom = document.getElementsByClassName('bottom_tail')[0];
+//                                var bottomPosition = bottom.getBoundingClientRect().top;
+                                var showStaticMenuBar = false;
+                                var showStaticMenuMenu = false;
+
+                                $(window).scroll(function () {
+
+                                    //if the static menu is not yet visible...
+                                    if (showStaticMenuBar == false) {
+                                        //if I scroll more than 200px, I show it 
+                                        if ($(window).scrollTop() >= 420) {
+                                            //showing the static menu
+                                            $('#banner-scroll').addClass('fixed');
+
+                                            showStaticMenuBar = true;
+
+                                        }
+
+                                    }
+                                    //if the static menu is already visible...
+                                    else {
+
+
+                                        if ($(window).scrollTop() < 420) {
+                                            $('#banner-scroll').removeClass('fixed');
+
+                                            //I define it as hidden
+                                            showStaticMenuBar = false;
+                                        }
+                                    }
+                                    
+                                    if (showStaticMenuMenu == false) {
+                                        //if I scroll more than 200px, I show it 
+                                        if ($(window).scrollTop() >= 200) {
+                                            //showing the static menu
+                                            $('#menu-scroll').addClass('fixed');
+
+                                            showStaticMenuMenu = true;
+
+                                        }
+
+                                    }
+                                    //if the static menu is already visible...
+                                    else {
+
+
+                                        if ($(window).scrollTop() < 200) {
+                                            $('#menu-scroll').removeClass('fixed');
+
+                                            //I define it as hidden
+                                            showStaticMenuMenu = false;
+                                        }
                                     }
                                 });
                             </script>
