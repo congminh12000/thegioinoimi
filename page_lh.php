@@ -34,9 +34,17 @@ if (!function_exists("GetSQLValueString")) {
 
 mysql_select_db($database_cnn_hoaly, $cnn_hoaly);
 $query_rs_news_lh = "SELECT ID_news, newstitle, newstitle_EN, shortdes, shortdes_EN, newsimg, newsapproval, ID_menubar1, ID_menubar2 FROM news WHERE newsapproval = 1 AND ID_menubar1=4 AND ID_menubar2=9 ORDER BY newsdate DESC";
-$rs_news_lh = mysql_query($query_rs_news_lh, $cnn_hoaly) or die(mysql_error());
-$row_rs_news_lh = mysql_fetch_assoc($rs_news_lh);
-$totalRows_rs_news_lh = mysql_num_rows($rs_news_lh);
+
+//class paginator
+require_once('includes/my/paginator.php');
+
+$classPaginator = new Paginator($query_rs_news_lh);
+
+$limit = ( isset($_GET['limit']) ) ? $_GET['limit'] : 6;
+$page = ( isset($_GET['page']) ) ? $_GET['page'] : 1;
+$links = ( isset($_GET['links']) ) ? $_GET['links'] : 1;
+
+$results = $classPaginator->getData($limit, $page);
 ?>
 <!DOCTYPE html>
 <html>
@@ -85,22 +93,65 @@ $totalRows_rs_news_lh = mysql_num_rows($rs_news_lh);
                 <div class="row">
                     <div class="col-xs-12 co-sm-12 col-md-8 col-lg-8">
 
-                        <?php do { ?>
-                            <div class="row box_news2" data-sb="fadeInUp">
-                                <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
-                                    <a href="page_newsdetail.php?cat=<?php echo $row_rs_news_lh['ID_menubar1']; ?>&id=<?php echo $row_rs_news_lh['ID_news']; ?>" target="_self"><img src="images/news/<?php echo $row_rs_news_lh['newsimg']; ?>" alt="Công Ty TNHH Thương Mại Lyan" class="img-responsive"></a>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
-                                    <h4><a href="page_newsdetail.php?cat=<?php echo $row_rs_news_lh['ID_menubar1']; ?>&id=<?php echo $row_rs_news_lh['ID_news']; ?>" target="_self"><?php echo $row_rs_news_lh['newstitle']; ?></a></h4>
-                                    <span class="line3"></span>
-                                    <p><?php echo $row_rs_news_lh['shortdes']; ?></p>
-                                    <p><a href="page_newsdetail.php?cat=<?php echo $row_rs_news_lh['ID_menubar1']; ?>&id=<?php echo $row_rs_news_lh['ID_news']; ?>" target="_self">Chi tiết <i class="fa fa-chevron-right" aria-hidden="true"></i></a></p>
-                                </div> 
-                            </div> <!-- row box_news2-->
-                        <?php } while ($row_rs_news_lh = mysql_fetch_assoc($rs_news_lh)); ?>
+                        <?php
+                        if ($results->total):
+                            $stt = 1;
+                            foreach ($results->data as $row):
+
+                                switch ($lang) {
+                                    case 'vn':
+
+                                        $title = $row['newstitle'];
+                                        $shortdes = $row['shortdes'];
+                                        break;
+                                    case 'en':
+
+                                        $title = $row['newstitle_EN'];
+                                        $shortdes = $row['shortdes_EN'];
+                                        break;
+                                    case 'tw':
+
+                                        $title = $row['newstitle_TW'];
+                                        $shortdes = $row['shortdes_TW'];
+                                        break;
+                                    default:
+
+                                        $title = $row['newstitle'];
+                                        $shortdes = $row['shortdes'];
+                                        break;
+                                }
+                                ?>
+                                <div class="row box_news2" data-sb="fadeInUp">
+                                    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+                                        <a href="page_newsdetail.php?cat=<?php echo $row['ID_menubar1']; ?>&id=<?php echo $row['ID_news']; ?>" target="_self"><img src="images/news/<?php echo $row['newsimg']; ?>" alt="Công Ty TNHH Thương Mại Lyan" class="img-responsive"></a>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                                        <h4><a href="page_newsdetail.php?cat=<?php echo $row['ID_menubar1']; ?>&id=<?php echo $row['ID_news']; ?>" target="_self"><?php echo $title; ?></a></h4>
+                                        <span class="line3"></span>
+                                        <p><?php echo $shortdes; ?></p>
+                                        <p><a href="page_newsdetail.php?cat=<?php echo $row['ID_menubar1']; ?>&id=<?php echo $row['ID_news']; ?>" target="_self">Chi tiết <i class="fa fa-chevron-right" aria-hidden="true"></i></a></p>
+                                    </div> 
+                                </div> <!-- row box_news2-->
+                                <?php
+                            endforeach;
+                        else:
+                            ?>
+                            Không có dữ liệu nào !
+                        <?php
+                        endif;
+                        ?>
                     </div> <!-- end col-->
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <?php if ($results->total): ?>
+                            <div class="paginator text-center">
+                                <?php echo $classPaginator->createLinks($links, 'pagination pagination-sm'); ?> 
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
                     <!--<article class="hidden-xs hidden-sm col-md-4 col-lg-4" data-sb="fadeInUp">-->
-                        <img src="images/khoa-hoc-lich-hoc-280x360.jpg" alt="Công Ty TNHH Thương Mại Lyan" id="banner-scroll" class="img-responsive"> 
+                    <img src="images/khoa-hoc-lich-hoc-280x360.jpg" alt="Công Ty TNHH Thương Mại Lyan" id="banner-scroll" class="img-responsive"> 
                     <!--</article>--> 
                     <!-- end article-->
                 </div> 
@@ -111,5 +162,5 @@ $totalRows_rs_news_lh = mysql_num_rows($rs_news_lh);
     </body>
 </html>
 <?php
-mysql_free_result($rs_news_lh);
+//mysql_free_result($rs_news_lh);
 ?>

@@ -22,6 +22,7 @@ if ($_GET) {
         die;
     }
 
+    //parent
     $strQuery = "SELECT * FROM type_menubar2 WHERE tm2_status = 1 AND tm2_deleted = 0 AND ID_menubar2 = {$typeMenubar2Id}";
     $query = mysql_query($strQuery);
 
@@ -32,16 +33,25 @@ if ($_GET) {
     }
 
     while ($row = mysql_fetch_assoc($query)) {
+        $arrParentId[] = $row['ID_type_menubar2'];
         $arrType[] = $row;
+    }
+
+    //child
+    $strQuery = "SELECT * FROM type_menubar2 WHERE tm2_status = 1 AND tm2_deleted = 0 AND parent_id IN ('" . implode("','", $arrParentId) . "')";
+    $query = mysql_query($strQuery);
+
+    while ($row = mysql_fetch_assoc($query)) {
+        $arrTypeChild[$row['parent_id']][] = $row;
     }
 
     $arrResp = [
         'isError' => false,
         'data' => [
-            'arrType' => $arrType
+            'arrType' => $arrType,
+            'arrTypeChild' => $arrTypeChild
         ]
     ];
-
 }
 
 echo json_encode($arrResp);

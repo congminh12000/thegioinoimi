@@ -61,10 +61,31 @@ $classPrice = new Price();
 $arrPrice = $classPrice->priceCatToAccessLevel($colname_rs_productrelative);
 ?>
 <div class="product">
-    <?php do { ?>
+    <?php
+    do {
+
+        switch ($lang) {
+            case 'vn':
+
+                $name = $row_rs_productrelative['productname'];
+                break;
+            case 'en':
+
+                $name = $row_rs_productrelative['productname_EN'];
+                break;
+            case 'tw':
+
+                $name = $row_rs_productrelative['productname_TW'];
+                break;
+            default:
+
+                $name = $row_rs_productrelative['productname'];
+                break;
+        }
+        ?>
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 text-center productbox productboxdetail">
             <a href="productdetail.php?cat=<?php echo $row_rs_productrelative['ID_danhmuc2']; ?>&id=<?php echo $row_rs_productrelative['ID_product']; ?>" target="_self"><img src="images/product/<?php echo $row_rs_productrelative['productimg']; ?>" alt="Công Ty TNHH Thương Mại Lyan"></a>
-            <h4><a href="productdetail.php?cat=<?php echo $row_rs_productrelative['ID_danhmuc2']; ?>&id=<?php echo $row_rs_productrelative['ID_product']; ?>" target="_self"><?php echo $row_rs_productrelative['productname']; ?></a></h4>
+            <h4><a href="productdetail.php?cat=<?php echo $row_rs_productrelative['ID_danhmuc2']; ?>&id=<?php echo $row_rs_productrelative['ID_product']; ?>" target="_self"><?php echo $name; ?></a></h4>
 
             <?php if ($id_account): ?>
                 <p><?php echo isset($arrPrice[$row_rs_productrelative['ID_product']]) ? $formatPrice->format($arrPrice[$row_rs_productrelative['ID_product']]) : ''; ?></p>

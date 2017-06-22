@@ -58,13 +58,35 @@ $arrPrice = $classPrice->priceMultiAccessLevel($arrProdId);
 session_start();
 $user = $_SESSION['user'];
 $id_account = (int) $user['ID_account'];
+
 ?>
 
-<?php do { ?>
+<?php do {
+    
+    switch($lang){
+        case 'vn':
+            
+            $name = $row_rs_productindex['productname'];
+            break;
+        case 'en':
+            
+            $name = $row_rs_productindex['productname_EN'];
+            break;
+        case 'tw':
+            
+            $name = $row_rs_productindex['productname_TW'];
+            break;
+        default:
+            
+            $name = $row_rs_productindex['productname'];
+            break;
+    }
+    
+    ?>
     <li class="productboxdetail" style="height:auto"> 
         <a href="productdetail.php?cat=<?php echo $row_rs_productindex['ID_danhmuc2']; ?>&amp;id=<?php echo $row_rs_productindex['ID_product']; ?>" target="_self"><img src="images/product/<?php echo $row_rs_productindex['productimg']; ?>" alt="Công Ty TNHH Thương Mại Lyan" class="img-responsive"></a>
         <span class="text-center">
-            <h4><a href="productdetail.php?cat=<?php echo $row_rs_productindex['ID_danhmuc2']; ?>&amp;id=<?php echo $row_rs_productindex['ID_product']; ?>" target="_self"><?php echo $row_rs_productindex['productname']; ?></a></h4>
+            <h4><a href="productdetail.php?cat=<?php echo $row_rs_productindex['ID_danhmuc2']; ?>&amp;id=<?php echo $row_rs_productindex['ID_product']; ?>" target="_self"><?php echo $name; ?></a></h4>
 
             <?php if ($id_account): ?>
                 <p><?php echo isset($arrPrice[$row_rs_productindex['ID_product']]) ? $formatPrice->format($arrPrice[$row_rs_productindex['ID_product']]) : ''; ?></p>

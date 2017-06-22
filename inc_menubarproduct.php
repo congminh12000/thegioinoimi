@@ -39,8 +39,29 @@ $row_rs_menubar_product = mysql_fetch_assoc($rs_menubar_product);
 $totalRows_rs_menubar_product = mysql_num_rows($rs_menubar_product);
 ?>
 
-<?php do { ?>
-    <li><a href="product.php?cat=<?php echo $row_rs_menubar_product['ID_menubar2']; ?>"><?php echo $row_rs_menubar_product['menubar2name']; ?></a></li>
+<?php
+do {
+
+    switch ($lang) {
+        case 'vn':
+
+            $name = $row_rs_menubar_product['menubar2name'];
+            break;
+        case 'en':
+
+            $name = $row_rs_menubar_product['menubar2name_EN'];
+            break;
+        case 'tw':
+
+            $name = $row_rs_menubar_product['menubar2name_TW'];
+            break;
+        default:
+
+            $name = $row_rs_menubar_product['menubar2name'];
+            break;
+    }
+    ?>
+    <li><a href="product.php?cat=<?php echo $row_rs_menubar_product['ID_menubar2']; ?>"><?php echo $name; ?></a></li>
 <?php } while ($row_rs_menubar_product = mysql_fetch_assoc($rs_menubar_product)); ?>
 
 <?php

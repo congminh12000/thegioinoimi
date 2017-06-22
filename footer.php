@@ -190,10 +190,16 @@
 
                                                 if (!result.isError) {
                                                     var arrType = result.data.arrType;
-                                                    var _inputOptions = '';
+                                                    var arrTypeChild = result.data.arrTypeChild;
+                                                    var _inputOptions = '<option value="0">== Chọn loại mi ==</option>';
 
                                                     $.each(arrType, function (k, v) {
-                                                        _inputOptions += '<option value="' + v.ID_type_menubar2 + '">' + v.tm2_name + '</option>';
+                                                        _inputOptions += '<option value="' + v.ID_type_menubar2 + '" disabled>' + v.tm2_name + '</option>';
+                                                        
+                                                        $.each(arrTypeChild[v.ID_type_menubar2], function (_k, _v) {
+                                                            
+                                                            _inputOptions += '<option value="' + _v.ID_type_menubar2 + '">- ' + _v.tm2_name + '</option>';
+                                                        });
                                                     })
 
                                                     _html += '<div class="col-md-5"><label> Loại: <label></div>';
@@ -270,11 +276,14 @@
                                 var showStaticMenuMenu = false;
 
                                 $(window).scroll(function () {
+                                
+                                    var min = 420;
+                                    var max = 1500;
 
                                     //if the static menu is not yet visible...
                                     if (showStaticMenuBar == false) {
                                         //if I scroll more than 200px, I show it 
-                                        if ($(window).scrollTop() >= 420) {
+                                        if ($(window).scrollTop() >= min && $(window).scrollTop() <= max) {
                                             //showing the static menu
                                             $('#banner-scroll').addClass('fixed');
 
@@ -287,7 +296,7 @@
                                     else {
 
 
-                                        if ($(window).scrollTop() < 420) {
+                                        if ($(window).scrollTop() < min || $(window).scrollTop() > max) {
                                             $('#banner-scroll').removeClass('fixed');
 
                                             //I define it as hidden

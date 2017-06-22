@@ -1,4 +1,6 @@
 <?php
+require_once('common.php');
+
 session_start();
 
 $user = $_SESSION['user'];
@@ -6,6 +8,8 @@ $id_account = (int) $user['ID_account'];
 
 $cart = $_SESSION['cart'][$id_account];
 $cart_nums = (int) $cart['nums'];
+
+$lang = $_SESSION['lang'];
 ?>
 
 <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
@@ -20,13 +24,13 @@ $cart_nums = (int) $cart['nums'];
 <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-right">
     <div class="row language_box">
         <span class="submenu">
-            <a href="#" target="_self"><img src="images/vietnameseflag.png">&nbsp;&nbsp;Việt Nam</a>&nbsp;&nbsp;|&nbsp;&nbsp; 
+            <a href="javascript:void(0);" class="btn-set-languages" data-lang="vn" target="_self"><img src="images/vietnameseflag.png">&nbsp;&nbsp;Việt Nam</a>&nbsp;&nbsp;|&nbsp;&nbsp; 
         </span>
         <span class="submenu">
-            <a href="#" target="_self"><img src="images/englishflag.png">&nbsp;&nbsp;English</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <a href="javascript:void(0);" class="btn-set-languages" data-lang="en" target="_self"><img src="images/englishflag.png">&nbsp;&nbsp;English</a>&nbsp;&nbsp;|&nbsp;&nbsp;
         </span>
         <span class="submenu">
-            <a href="http://daotaonoimi.com/?lang=cn" target="_self"><img src="images/taiwanflag.png">&nbsp;&nbsp;中文 (中国)</a> 
+            <a href="javascript:void(0);" class="btn-set-languages" data-lang="tw" target="_self"><img src="images/taiwanflag.png">&nbsp;&nbsp;中文 (中国)</a> 
         </span> 
     </div> <!--end row-->
     <div class="row language_box">
@@ -47,3 +51,29 @@ $cart_nums = (int) $cart['nums'];
         </span>
     </div> <!--end row-->
 </div> <!--end col-->
+
+<script>
+    $(document).ready(function () {
+
+        $('.btn-set-languages').click(function () {
+            var lang = $(this).data('lang');
+
+            $.ajax({
+                url: 'set_languages.php',
+                type: 'GET',
+                dataType: 'JSON',
+                data: {
+                    lang: lang
+                },
+                success: function (result) {
+
+                    if (!result.isError) {
+                        window.location = window.location.href;
+                    } else {
+                        //                    alert(result.message);
+                    }
+                }
+            })
+        });
+    });
+</script>
