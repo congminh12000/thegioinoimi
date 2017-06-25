@@ -34,7 +34,10 @@ if ($_GET) {
 
     while ($row = mysql_fetch_assoc($query)) {
         $arrParentId[] = $row['ID_type_menubar2'];
-        $arrType[] = $row;
+        
+        $row['tm2_name'] = strtolower($row['tm2_name']);
+        
+        $arrType[$row['ID_type_menubar2']] = $row;
     }
 
     //child
@@ -42,9 +45,10 @@ if ($_GET) {
     $query = mysql_query($strQuery);
 
     while ($row = mysql_fetch_assoc($query)) {
+        
         $arrTypeChild[$row['parent_id']][] = $row;
     }
-
+//echo'<pre>';print_r($arrTypeChild);die;
     $arrResp = [
         'isError' => false,
         'data' => [

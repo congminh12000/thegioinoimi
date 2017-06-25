@@ -16,7 +16,7 @@ $arrResp = [
 
 if ($_GET) {
     $productId = (int) $_GET['productId'];
-    $typeMenubar2Id = (int) $_GET['typeMenubar2Id'];
+    $strTypeMenubar2Id = $_GET['strTypeMenubar2Id'];
 
     if (!$productId) {
         $arrResp['message'] = 'Lỗi !';
@@ -36,17 +36,21 @@ if ($_GET) {
     $userId = (int) $user['ID_account'];
     
     //get type
-    $strQuery = "SELECT * FROM type_menubar2 WHERE tm2_status = 1 AND tm2_deleted = 0 AND ID_type_menubar2 = {$typeMenubar2Id}";
-    $query = mysql_query($strQuery);
-    $typeMenubar2 = mysql_fetch_assoc($query);
-    $ID_type_menubar2 = (int) $typeMenubar2['ID_type_menubar2'];
+//    $strQuery = "SELECT * FROM type_menubar2 WHERE tm2_status = 1 AND tm2_deleted = 0 AND ID_type_menubar2 IN (" . $strTypeMenubar2Id . ")";
+//    $query = mysql_query($strQuery);
+//     
+//    while($row = mysql_fetch_assoc($query)){
+//        $arrTypeMenubar2[$row['ID_type_menubar2']] = $row;
+//    }
+//    print_r($_SESSION['cart']);die;
+//    $ID_type_menubar2 = (int) $typeMenubar2['ID_type_menubar2'];
 
-    $sessionProdId = $_SESSION['cart'][$userId]['arrProd'][$productId][$ID_type_menubar2];
-    
+    $sessionProdId = $_SESSION['cart'][$userId]['arrProd'][$productId][$strTypeMenubar2Id];
+
     $sl = $sessionProdId['sl'];
     
     //unset prod
-    unset($_SESSION['cart'][$userId]['arrProd'][$productId][$ID_type_menubar2]);
+    unset($_SESSION['cart'][$userId]['arrProd'][$productId][$strTypeMenubar2Id]);
     
     //update nums
     if($_SESSION['cart'][$userId] > 1){

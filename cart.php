@@ -105,23 +105,31 @@ $formatPrice = new FormatPrice();
                             <?php
                             $priceTotal = 0;
                             foreach ($arrProdCart as $row):
+                                $arrIDTypeMenubar2 = implode('-', $row['arr_ID_type_menubar2']);
                                 $priceTotal += $row['qty_cart'] * $row['price_access_level'];
                                 $sl = $row['qty_cart'];
+                                $strTm2Name = '';
+                                
+                                foreach($row['arr_ID_type_menubar2'] as $id){
+                                    
+                                    $strTm2Name .= $arrTypeMenubar2[$id]['tm2_name'] . '<br>';
+                                }
+                                
                                 ?>
                                 <div class="row cart-product">
                                     <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
                                         <img src="<?php echo 'images/product/' . $row['productimg']; ?>" alt="Công ty TNHH Thương mại Lyan" class="img-responsive"> 
-                                        <button class="btn btn-warning btn-remove-prod" style="margin-top: 5px" data-id="<?php echo $row['ID_product']; ?>" data-type-menubar2="<?php echo $row['ID_type_menubar2']; ?>" data-price="<?php echo $row['price_access_level']; ?>">Xóa sản phẩm</button>
+                                        <button class="btn btn-warning btn-remove-prod" style="margin-top: 5px" data-id="<?php echo $row['ID_product']; ?>" data-type-menubar2="<?php echo $arrIDTypeMenubar2; ?>" data-price="<?php echo $row['price_access_level']; ?>">Xóa sản phẩm</button>
                                     </div>
                                     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 text-center">
                                         <?php echo $row['productname']; ?>
                                     </div>
                                     <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 text-center">
-                                        <?php echo $arrTypeMenubar2[$row['ID_type_menubar2']]['tm2_name']; ?>
+                                        <?php echo $strTm2Name; ?>
                                     </div>
                                     <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 text-center">
                                         <input type="number" class="so-luong-sp" min='1' value="<?php echo $sl; ?>" />
-                                        <button class="btn btn-success btn-update-sl" style="margin-top: 5px" data-id="<?php echo $row['ID_product']; ?>" data-type-menubar2="<?php echo $row['ID_type_menubar2']; ?>" data-price="<?php echo $row['price_access_level']; ?>">Cập nhật số lượng</button>
+                                        <button class="btn btn-success btn-update-sl" style="margin-top: 5px" data-id="<?php echo $row['ID_product']; ?>" data-type-menubar2="<?php echo $arrIDTypeMenubar2; ?>" data-price="<?php echo $row['price_access_level']; ?>">Cập nhật số lượng</button>
                                     </div>
                                     <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 text-center">
                                         <span class="total-price"><?php echo $formatPrice->format($row['price_access_level'] * $sl); ?></span>

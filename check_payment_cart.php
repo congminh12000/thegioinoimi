@@ -11,24 +11,22 @@ $arrResp = [
     'message' => 'Error'
 ];
 
-if ($_GET) {
-    session_start();
-    $cart = $_SESSION['cart'];
-   
-    $isPayment = true;
-    $nums = (int) current(array_column($cart, 'nums'));
+session_start();
+$cart = $_SESSION['cart'];
 
-    if (!$nums) {
-        $isPayment = false;
-    }
-    
-    $arrResp = [
-        'isError' => false,
-        'data' => [
-            'isPayment' => $isPayment
-        ]
-    ];
+$isPayment = true;
+$nums = (int) current(array_column($cart, 'nums'));
+
+if (!$nums) {
+    $isPayment = false;
 }
+
+$arrResp = [
+    'isError' => false,
+    'data' => [
+        'isPayment' => $isPayment
+    ]
+];
 
 echo json_encode($arrResp);
 die;

@@ -22,7 +22,7 @@ if ($_GET) {
     $productId = (int) $_GET['productId'];
     $sl = (int) $_GET['sl'];
     $price = $_GET['price'];
-    $typeMenubar2Id = (int) $_GET['typeMenubar2Id'];
+    $strTypeMenubar2Id = $_GET['strTypeMenubar2Id'];
     $oldSumTotal = $_GET['oldSumTotal'];
 
     if (!$productId || $sl <= 0) {
@@ -43,18 +43,18 @@ if ($_GET) {
     $userId = (int) $user['ID_account'];
 
     //get type
-    $strQuery = "SELECT * FROM type_menubar2 WHERE tm2_status = 1 AND tm2_deleted = 0 AND ID_type_menubar2 = {$typeMenubar2Id}";
-    $query = mysql_query($strQuery);
-    $typeMenubar2 = mysql_fetch_assoc($query);
-    $ID_type_menubar2 = (int) $typeMenubar2['ID_type_menubar2'];
+//    $strQuery = "SELECT * FROM type_menubar2 WHERE tm2_status = 1 AND tm2_deleted = 0 AND ID_type_menubar2 = {$typeMenubar2Id}";
+//    $query = mysql_query($strQuery);
+//    $typeMenubar2 = mysql_fetch_assoc($query);
+//    $ID_type_menubar2 = (int) $typeMenubar2['ID_type_menubar2'];
 
-    $sessionProdId = $_SESSION['cart'][$userId]['arrProd'][$productId][$ID_type_menubar2];
+    $sessionProdId = $_SESSION['cart'][$userId]['arrProd'][$productId][$strTypeMenubar2Id];
 
     //old sl
     $oldSl = $sessionProdId['sl'];
 
     //update new sl
-    $_SESSION['cart'][$userId]['arrProd'][$productId][$ID_type_menubar2]['sl'] = $sl;
+    $_SESSION['cart'][$userId]['arrProd'][$productId][$strTypeMenubar2Id]['sl'] = $sl;
 //var_dump($_SESSION['cart'][$userId]['arrProd'][$productId][$ID_type_menubar2]);die;
     
     //format price

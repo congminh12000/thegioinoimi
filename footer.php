@@ -26,7 +26,7 @@
                 </div>
                 <p>ORA Nails Eyelash Salon là salon nhượng quyền chuyên chăm sóc mi & móng đầu tiên ở Việt Nam của hệ thống salon ORA Taiwan.</p>
                 <h4><a href="https://www.facebook.com/orasalon.vn/" target="_blank"><i class="fa fa-facebook-square fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;<a href="mailto:hoalys.lyan@gmail.com"><i class="fa fa-google-plus-square fa-lg" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;<a href="https://www.youtube.com/channel/UCfVxSLLKyiyrQFCqg6IKOWQ/videos" target="_blank"><i class="fa fa-youtube-play fa-lg" aria-hidden="true"></i></a></h4>
-                <img src="images/footer-youtubeiframe.png" alt="Công Ty TNHH Thương Mại Lyan" class="img-responsive">
+                <a href="https://www.youtube.com/channel/UCfVxSLLKyiyrQFCqg6IKOWQ/videos" target="_blank"><img src="images/footer-youtubeiframe.png" alt="Công Ty TNHH Thương Mại Lyan" class="img-responsive"></a>
 
             </div> <!-- end box_footer-->
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 box_footer">
@@ -35,7 +35,7 @@
                 <h5><i class="fa fa-globe" aria-hidden="true"></i> 365 Sư Vạn Hạnh, Phường 12, Quận 10, TP.HCM</h4>
                     <h5><i class="fa fa-phone-square" aria-hidden="true"></i> Hotline: <a href="tel:0965777515">0965 777 515</a> - <i class="fa fa-phone-square" aria-hidden="true"></i> Tel: <a href="tel:0862822555">08 62 822 555</a></h4>
                         <h5><i class="fa fa-envelope" aria-hidden="true"></i> Email: hoalys.lyan@gmail.com</h4><br>
-                            <h3>Chính sách</h3>
+                            <h3><a href="page_cs.php" target="_self">Chính sách</a></h3>
                             <span class="line3"></span>
                             <?php include("index_cs.php"); ?>
                             </div> <!-- end box_footer-->
@@ -55,7 +55,8 @@
                                 var userId = <?php echo (int) $_SESSION['user']['ID_account']; ?>;
 
                                 $(document).ready(function () {
-                                    $('.btn-add-cart').click(function () {
+                                    $(document).off('click', '.btn-add-cart').on('click', '.btn-add-cart', function (e) {
+
                                         var that = $(this);
 
                                         if (userId == 0) {
@@ -87,6 +88,26 @@
                                                 preConfirm: function () {
                                                     return new Promise(function (resolve) {
                                                         var swalQty = $('#swal-qty').val();
+                                                        var swalType = $('.swal-type');
+                                                        var arrTypeChoose = [];
+                                                        var isError = false;
+
+                                                        if (typeof swalType != 'undefined') {
+
+                                                            $.each(swalType, function (k, v) {
+
+                                                                if ($(this).val() == 0) {
+                                                                    isError = true;
+                                                                }
+
+                                                                arrTypeChoose.push($(this).val());
+                                                            })
+                                                        }
+
+                                                        if (isError) {
+                                                            reject('Vui lòng chọn đầy đủ loại !');
+                                                            return false;
+                                                        }
 
                                                         ajaxHandleAddCart(that, productId, typeMenubar2Id, swalQty)
                                                         resolve()
@@ -96,8 +117,10 @@
                                                 showCancelButton: true
                                             })
                                         }
-
+                                        e.preventDefault();
                                     });
+
+
 
                                     $('.btn-update-sl').click(function () {
                                         var that = $(this);
@@ -121,7 +144,7 @@
                                                 sl: sl,
                                                 price: price,
                                                 oldSumTotal: oldSumTotal,
-                                                typeMenubar2Id: typeMenubar2Id
+                                                strTypeMenubar2Id: typeMenubar2Id
                                             },
                                             success: function (result) {
 
@@ -155,7 +178,7 @@
                                             dataType: 'JSON',
                                             data: {
                                                 productId: productId,
-                                                typeMenubar2Id: typeMenubar2Id
+                                                strTypeMenubar2Id: typeMenubar2Id
                                             },
                                             success: function (result) {
 
@@ -175,8 +198,34 @@
                                             }
                                         })
                                     });
-                                    function loadTypeMenubar2(that, productId, typeMenubar2Id) {
 
+                                    $('.btn-payment-cart').click(function () {
+
+                                        $.ajax({
+                                            url: 'check_payment_cart.php',
+                                            type: 'GET',
+                                            dataType: 'JSON',
+                                            success: function (result) {
+
+                                                if (!result.isError) {
+                                                    var isPayment = result.data.isPayment;
+
+                                                    if (isPayment) {
+                                                        window.location = 'cart.php';
+                                                    } else {
+                                                        $('.btn-add-cart').trigger('click');
+                                                    }
+
+                                                } else {
+                                                    //                    alert(result.message);
+                                                }
+                                            }
+                                        })
+                                    });
+
+
+                                    function loadTypeMenubar2(that, productId, typeMenubar2Id) {
+                                        console.log(typeMenubar2Id);
                                         $.ajax({
                                             url: 'get_type_menubar2.php',
                                             type: 'GET',
@@ -191,21 +240,24 @@
                                                 if (!result.isError) {
                                                     var arrType = result.data.arrType;
                                                     var arrTypeChild = result.data.arrTypeChild;
-                                                    var _inputOptions = '<option value="0">== Chọn loại mi ==</option>';
 
-                                                    $.each(arrType, function (k, v) {
-                                                        _inputOptions += '<option value="' + v.ID_type_menubar2 + '" disabled>' + v.tm2_name + '</option>';
-                                                        
-                                                        $.each(arrTypeChild[v.ID_type_menubar2], function (_k, _v) {
-                                                            
-                                                            _inputOptions += '<option value="' + _v.ID_type_menubar2 + '">- ' + _v.tm2_name + '</option>';
+                                                    if (arrTypeChild != null) {
+                                                        $.each(arrTypeChild, function (k, v) {
+
+                                                            _html += '<div class="col-md-5"><label> ' + arrType[k].tm2_name + ': <label></div>';
+                                                            _html += '<div class="col-md-6 text-left"><select class="swal-type" id="swal-type-' + arrType[k].tm2_name + '">';
+
+                                                            var _inputOptions = '<option value="0">== Chọn ' + arrType[k].tm2_name + ' ==</option>';
+
+                                                            $.each(v, function (_k, _v) {
+
+                                                                _inputOptions += '<option value="' + _v.ID_type_menubar2 + '">' + _v.tm2_name + '</option>';
+                                                            })
+
+                                                            _html += _inputOptions;
+                                                            _html += '</select></div><br><br>';
                                                         });
-                                                    })
-
-                                                    _html += '<div class="col-md-5"><label> Loại: <label></div>';
-                                                    _html += '<div class="col-md-6 text-left"><select id="swal-type">';
-                                                    _html += _inputOptions;
-                                                    _html += '</select></div>';
+                                                    }
 
                                                 } else {
                                                 }
@@ -215,29 +267,43 @@
                                                     html: _html,
                                                     allowOutsideClick: false,
                                                     confirmButtonText: 'Hoàn tất',
-                                                    cancelButtonText: 'Hủy bỏ',
                                                     preConfirm: function () {
-                                                        return new Promise(function (resolve) {
-                                                            var swalType = $('#swal-type').val();
+                                                        return new Promise(function (resolve, reject) {
+                                                            var swalType = $('.swal-type');
                                                             var swalQty = $('#swal-qty').val();
+                                                            var arrTypeChoose = [];
+                                                            var isError = false;
 
-                                                            if (typeof swalType == 'undefined') {
-                                                                swalType = 0;
+                                                            if (typeof swalType != 'undefined') {
+
+                                                                $.each(swalType, function (k, v) {
+
+                                                                    if ($(this).val() == 0) {
+                                                                        isError = true;
+                                                                    }
+
+                                                                    arrTypeChoose.push($(this).val());
+                                                                })
                                                             }
 
-                                                            ajaxHandleAddCart(that, productId, swalType, swalQty);
+                                                            if (isError) {
+                                                                reject('Vui lòng chọn đầy đủ loại !');
+                                                                return false;
+                                                            }
+
+                                                            ajaxHandleAddCart(that, productId, arrTypeChoose, swalQty);
                                                             resolve()
                                                         })
                                                     },
                                                     showCloseButton: true,
-                                                    showCancelButton: true
+                                                    showCancelButton: false
                                                 })
                                             }
                                         });
 
                                     }
 
-                                    function ajaxHandleAddCart(that, productId, typeMenubar2Id, qty) {
+                                    function ajaxHandleAddCart(that, productId, arrTypeChoose, qty) {
 
                                         if (productId == '' || productId == 0) {
                                             alert('Lỗi !');
@@ -250,7 +316,7 @@
                                             dataType: 'JSON',
                                             data: {
                                                 productId: productId,
-                                                typeMenubar2Id: typeMenubar2Id,
+                                                arrTypeMenubar2Id: arrTypeChoose,
                                                 qty: qty
                                             },
                                             success: function (result) {
@@ -269,14 +335,14 @@
 
 
                                 });
-                                
+
 //                                var bottom = document.getElementsByClassName('bottom_tail')[0];
 //                                var bottomPosition = bottom.getBoundingClientRect().top;
                                 var showStaticMenuBar = false;
                                 var showStaticMenuMenu = false;
 
                                 $(window).scroll(function () {
-                                
+
                                     var min = 420;
                                     var max = 1500;
 
@@ -303,7 +369,7 @@
                                             showStaticMenuBar = false;
                                         }
                                     }
-                                    
+
                                     if (showStaticMenuMenu == false) {
                                         //if I scroll more than 200px, I show it 
                                         if ($(window).scrollTop() >= 200) {

@@ -132,15 +132,15 @@ class Price {
         //prepare data product in session
         $arrProdPrepare = [];
 
-        foreach ($arrProd as $productId => $arrItem) {
+        foreach ($arrProd as $productId => $strType) {
 
-            foreach ($arrItem as $typeId => $item) {
-                $_key = $productId . '-' . $typeId;
+            foreach ($strType as $_strType => $item) {
+                $_key = $productId . '-' . $_strType;
 
                 $arrProdPrepare[$_key]['sl'] = $item['sl'];
             }
         }
-
+//echo '<pre>';print_r($arrProdPrepare);die;
         //get list product
         $strQuery = "SELECT * FROM product as p WHERE p.ID_product IN (" . implode(',', $arrProdId) . ")";
         $query = mysql_query($strQuery);
@@ -175,7 +175,8 @@ class Price {
 
         $arrDataCart = [];
         foreach ($arrProdPrepare as $key => $item) {
-            list($_productId, $_typeId) = explode('-', $key);
+            $__arr = explode('-', $key);
+            $_productId = array_shift($__arr);
             $_item = $listProd[$_productId];
 
             $priceAccessLevel = isset($arrPrice[$_item['ID_product']]) ? $arrPrice[$_item['ID_product']] : $_item['productprice'];
@@ -183,11 +184,11 @@ class Price {
 
             $_item['price_access_level'] = $priceAccessLevel;
             $_item['qty_cart'] = (int) $item['sl'];
-            $_item['ID_type_menubar2'] = $_typeId;
+            $_item['arr_ID_type_menubar2'] = $__arr;
 
             $arrDataCart[] = $_item;
         }
-//echo '<pre>';print_r($arrPrice);die;
+//echo '<pre>';print_r($arrDataCart);die;
         return $arrDataCart;
     }
 

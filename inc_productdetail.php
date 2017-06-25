@@ -56,10 +56,25 @@ session_start();
 $user = $_SESSION['user'];
 $id_account = (int) $user['ID_account'];
 
-//get type menubar2
+//get type parent menubar2
 $strQuery = "SELECT * FROM type_menubar2 WHERE tm2_status = 1 AND tm2_deleted = 0 AND ID_menubar2 = {$row_rs_productdetail['ID_danhmuc2']}";
 $query = mysql_query($strQuery);
 
+while ($row = mysql_fetch_assoc($query)) {
+    $arrParentType[] = $row;
+    $arrParentId[] = $row['ID_type_menubar2'];
+}
+
+if ($arrParentId) {
+
+    //get type child menubar2
+    $strQuery = "SELECT * FROM type_menubar2 WHERE tm2_status = 1 AND tm2_deleted = 0 AND parent_id IN (" . implode(',', $arrParentId) . ")";
+    $query = mysql_query($strQuery);
+
+    while ($row = mysql_fetch_assoc($query)) {
+        $arrChildType[$row['parent_id']][] = $row;
+    }
+}
 
 switch ($lang) {
     case 'vn':
@@ -97,6 +112,18 @@ switch ($lang) {
 }
 ?>
 
+<style>
+    .form-button-3 {
+        background: white;
+        border: 2px solid #7E3F98;
+        border-radius: 8px;
+        padding: 4px 10px;
+        color: #7E3F98;
+        margin-bottom: 13px;
+        cursor: default;
+    }
+</style>
+
 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
     <img src="images/product/<?php echo $row_rs_productdetail['productimg']; ?>" alt="<?php echo $name; ?>" class="img-responsive">
 </div> <!-- end col -->
@@ -118,24 +145,23 @@ switch ($lang) {
 
     <?php
     //get cate noi mi
-    if (mysql_num_rows($query)):
+    if ($arrParentType):
         ?>
-        <h5><b>Loại :</b> 
-            <select class="type-menubar2">
-                <?php while ($row = mysql_fetch_assoc($query)): ?>
-                    <option value="<?php echo $row['ID_type_menubar2']; ?>"><?php echo $row['tm2_name']; ?></option>
-                <?php endwhile; ?>
-            </select>
-        </h5>
+        <h5><b>Loại :</b> </h5>
+        <?php foreach ($arrParentType as $parentType): ?>
+            <h6><b>+ <?php echo $parentType['tm2_name']; ?></b></h6>
+
+            <?php foreach ($arrChildType[$parentType['ID_type_menubar2']] as $childType): ?>
+                <button class="form-button-3"><?php echo $childType['tm2_name']; ?></button>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+        <br>
         <?php
-    else:
-        ?>
-        <input type="hidden" class="type-menubar2" value="0" />
-    <?php
     endif;
     ?>
+
     <i><small style="color:red"><?php echo $note; ?></small></i>
-    <a href="javascript:void(0);" class="btn btn-info btn-add-cart" data-id="<?php echo $row_rs_productdetail['ID_product']; ?>" role="button">Thêm giỏ hàng</a>&nbsp;&nbsp;&nbsp; <a href="javascript:void(0);" class="btn btn-info btn-payment-cart" role="button">Thanh toán</a>
+    <a href="javascript:void(0);" class="btn btn-info btn-add-cart" data-id="<?php echo $row_rs_productdetail['ID_product']; ?>" data-is-type-menubar2="1" data-type-menubar2="<?php echo $row_rs_productdetail['ID_danhmuc2']; ?>" role="button">Thêm giỏ hàng</a>&nbsp;&nbsp;&nbsp; <a href="javascript:void(0);" class="btn btn-info btn-payment-cart" role="button">Thanh toán</a>
 </div> <!-- end col -->
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 boxproductcaption">

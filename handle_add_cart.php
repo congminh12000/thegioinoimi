@@ -14,9 +14,9 @@ $arrResp = [
 
 if ($_GET) {
     $productId = (int) $_GET['productId'];
-    $typeMenubar2Id = (int) $_GET['typeMenubar2Id'];
+    $arrTypeMenubar2Id = $_GET['arrTypeMenubar2Id'];
     $qty = ((int) $_GET['qty']) > 0 ? $_GET['qty'] : 1;
-
+//var_dump($arrTypeMenubar2Id);die;
     if (!$productId) {
         $arrResp['message'] = 'Lỗi !';
         echo json_encode($arrResp);
@@ -33,9 +33,11 @@ if ($_GET) {
     }
 
     $userId = (int) $user['ID_account'];
+    
+    $_arrTypeMenubar2Id = empty($arrTypeMenubar2Id) ? 0 : implode('-', $arrTypeMenubar2Id);
 
     //sl 1 sp
-    $sessionProdId = $_SESSION['cart'][$userId]['arrProd'][$productId][$typeMenubar2Id];
+    $sessionProdId = $_SESSION['cart'][$userId]['arrProd'][$productId][$_arrTypeMenubar2Id];
 
     if (empty($sessionProdId)) {
         //sl tong
@@ -43,7 +45,7 @@ if ($_GET) {
     }
 
     //sl 1 sp
-    $_SESSION['cart'][$userId]['arrProd'][$productId][$typeMenubar2Id]['sl'] += $qty;
+    $_SESSION['cart'][$userId]['arrProd'][$productId][$_arrTypeMenubar2Id]['sl'] += $qty;
 
     $nums = $_SESSION['cart'][$userId]['nums'];
 //echo '<pre>';print_r($_SESSION);die;

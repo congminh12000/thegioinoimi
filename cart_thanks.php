@@ -85,8 +85,9 @@
                 $strValuesItem = '';
                 foreach ($arrProdCart as $prod) {
                     $grandTotalItem = $prod['price_access_level'] * $prod['qty_cart'];
+                    $jsonType = implode(',', $prod['arr_ID_type_menubar2']);
 
-                    $strValuesItem .= "('{$orderId}', '{$prod['qty_cart']}', '{$prod['ID_product']}', '{$grandTotalItem}', {$prod['price_access_level']}, {$prod['ID_type_menubar2']}),";
+                    $strValuesItem .= "('{$orderId}', '{$prod['qty_cart']}', '{$prod['ID_product']}', '{$grandTotalItem}', {$prod['price_access_level']}, '{$jsonType}'),";
                 }
                 $strValuesItem = rtrim($strValuesItem, ',');
 

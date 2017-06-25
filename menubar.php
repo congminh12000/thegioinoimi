@@ -25,7 +25,7 @@
                 <li class="dropdown">
                     <a href="#" id="menu_general_product" class="dropdown-toggle" data-toggle="dropdown">SẢN PHẨM <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="product.php">Tất cả sản phẩm</a></li>
+                        <li><a href="product.php">TẤT CẢ SẢN PHẨM</a></li>
                         <?php include("inc_menubarproduct.php"); ?>
                     </ul>
                 </li>
@@ -40,7 +40,6 @@
                 <li><a href="page_cnv.php">CÂY NHÍP VÀNG</a></li>
                 <li><a href="page_sk.php">SỰ KIỆN</a></li>
                 <li><a href="page_ktcm.php">KIẾN THỨC CHUYÊN MÔN</a></li>
-                <li><a href="page_cs.php">CHÍNH SÁCH</a></li>
                 <li><a href="contact.php">LIÊN HỆ</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->

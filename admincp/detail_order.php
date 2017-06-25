@@ -28,29 +28,42 @@ if ($_GET) {
         die;
     }
 
+    //get type
+    $strQuery = "SELECT * FROM type_menubar2";
+    $query = mysql_query($strQuery);
+    while ($row = mysql_fetch_assoc($query)) {
+        $arrType[$row['ID_type_menubar2']] = $row;
+    }
+
     $strQuery = "SELECT * FROM order_item as oi LEFT JOIN product as p ON oi.ID_product = p.ID_product "
-            . "LEFT JOIN type_menubar2 as tm2 ON tm2.ID_type_menubar2 = oi.ID_type_menubar2 "
             . "WHERE ID_order = {$orderId}";
     $query = mysql_query($strQuery);
     $table = '</table>'
             . '<table class="table table-hover">'
             . '<thead>'
-                       .'                 <tr>'
-                                            .'<th>Tên sản phẩm</th>'
-            .'<th>Loại</th>'
-                                            .'<th>Số lượng</th>'
-                                            .'<th>Đơn giá</th>'
-                                            .'<th>Thành tiền</th>'
-                                        .'</tr>'
-                                    .'</thead>'
-                                    .'<tbody>';
-    
+            . '                 <tr>'
+            . '<th>Tên sản phẩm</th>'
+            . '<th>Loại</th>'
+            . '<th>Số lượng</th>'
+            . '<th>Đơn giá</th>'
+            . '<th>Thành tiền</th>'
+            . '</tr>'
+            . '</thead>'
+            . '<tbody>';
+
     if (mysql_num_rows($query)) {
-        
+
         while ($row = mysql_fetch_assoc($query)) {
+
+            $strType = '';
+            foreach (explode(',', $row['ID_type_menubar2']) as $id) {
+                $strType .= $arrType[$id]['tm2_name'] . ', ';
+            }
+            $strType = rtrim($strType, ', ');
+
             $table .= '<tr>'
                     . '<td>' . $row['productname'] . '</td>'
-                    . '<td>' . $row['tm2_name'] . '</td>'
+                    . '<td>' . $strType . '</td>'
                     . '<td>' . $row['qty_ordered'] . '</td>'
                     . '<td>' . $formatPrice->format($row['price_access_level']) . '</td>'
                     . '<td>' . $formatPrice->format($row['grand_total']) . '</td>'
