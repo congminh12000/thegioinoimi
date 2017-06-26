@@ -160,7 +160,7 @@ switch ($lang) {
     endif;
     ?>
 
-    <i><small style="color:red"><?php echo $note; ?></small></i>
+    <i><small style="color:red; font-size: 95%"><?php echo $note; ?></small></i>
     <a href="javascript:void(0);" class="btn btn-info btn-add-cart" data-id="<?php echo $row_rs_productdetail['ID_product']; ?>" data-is-type-menubar2="1" data-type-menubar2="<?php echo $row_rs_productdetail['ID_danhmuc2']; ?>" role="button">Thêm giỏ hàng</a>&nbsp;&nbsp;&nbsp; <a href="javascript:void(0);" class="btn btn-info btn-payment-cart" role="button">Thanh toán</a>
 </div> <!-- end col -->
 <div class="row">
